@@ -1,43 +1,43 @@
 const projects = [
 	{
 		name: "PROJECT: Boardbreakers (In Development)",
-		tags: ["Independent Learning", "GDScript", "Godot", "Steamworks", "Aseprite", "Solo Project"],
+		tags: ["Independent Learning", "GDScript", "Godot", "Steamworks", "Aseprite", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/boardbreakers.png",
-		description: "Placeholder."
+		description: "Programming a project that is planned to be released on Steam in the future. The game's premise is a 4 player, 2.5D board game where each player moves and battles each other for control of the board, obtain items, collect money to eventually win the entire game. Players can create custom tailored builds using items in order to adapt to the ever incressing need to survive against their opponents."
 	},
 	{
 		name: "Personal Website",
-		tags: ["Independent Learning", "HTML", "CSS", "JavaScript", "Claude", "GitHub Pages", "Solo Project"],
+		tags: ["Independent Learning", "HTML", "CSS", "JavaScript", "Claude", "GitHub Pages", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/website.png",
 		description: "A personal website created to store a record of all my contributed projects in one space. The initial steps to create this page was helped by using Claude, and further development consisted of tweeks and improvments after file generation."
 	},
 	{
 		name: "FACE//WATCH",
-		tags: ["TVSJD Game Jam 2026", "GDScript", "Godot", "Aseprite", "Team Project"],
+		tags: ["TVSJD Game Jam 2026", "GDScript", "Godot", "Aseprite", "Itch.io", "Excalidraw", "GitHub", "Team Project"],
 		thumbnail: "assets/images/faceWatch.png",
-		description: "Programmed the game 'FACE//WATCH', a face detection game where you attempt to spot the only unique face on a screen filled with non-unique faces. Later quotas introduce new effects that either distract, challenge or assist you."
+		description: "Programmed the game 'FACE//WATCH', a face detection game where you attempt to spot the only unique face on a screen filled with non-unique faces. Later quotas introduce new effects that either distract, challenge or assist you. I was also in charge of designing the Itch.io page for the game."
 	},
 	{
 		name: "Shattered Side",
-		tags: ["South East Technological University Industry Day 2026", "C++", "SFML", "Azure", "DigitalOcean", "SQL", "UDP Networking", "Aseprite", "Solo Project"],
+		tags: ["South East Technological University Industry Day 2026", "C++", "SFML", "Azure", "DigitalOcean", "SQL", "UDP Networking", "Aseprite", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/shatteredSide.png",
 		description: "Programmed the game 'Shattered Side', a roguelike dungeon crawler game, where the goal is to keep your chosen characters alive while also managing both at the same time. The game not only can be played offline but also includes an online mode, which allows for account creation, leaderboards and online multiplayer."
 	},
 	{
 		name: "Astro Hopper",
-		tags: ["Games Fleadh 2024", "HTML", "CSS", "JavaScript", "Team Project"],
+		tags: ["Games Fleadh 2024", "HTML", "CSS", "JavaScript", "GitHub", "Team Project"],
 		thumbnail: "assets/images/astroHopper.png",
 		description: "Programmed the game 'Astro Hopper', a tile-based puzzle game where you must reach the end of the level without retracing your steps and avoid incoming threats."
 	},
 	{
 		name: "Wewe Loves Time Travel",
-		tags: ["UI Programming Project 2023", "HTML", "CSS", "JavaScript", "PWA", "Solo Project"],
+		tags: ["UI Programming Project 2023", "HTML", "CSS", "JavaScript", "PWA", "Codeberg", "Solo Project"],
 		thumbnail: "assets/images/wewe.png",
 		description: "Programmed the game 'Wewe Loves Time Travel', a game inspired by 'Baba Is You'. This is a puzzle game where you must complete seemingly impossible levels by moving word blocks to alter the state of the current level."
 	},
 	{
 		name: "Temple Root",
-		tags: ["Game Jam 2023", "C++", "SFML", "Aseprite", "Team Project"],
+		tags: ["Game Jam 2023", "C++", "SFML", "Aseprite", "GitHub", "Team Project"],
 		thumbnail: "assets/images/templeRoot.png",
 		description: "Programmed the game 'Temple Root', a 2D puzzle game where you solve a series of puzzles in a room as fast as possible before being trapped."
 	}
