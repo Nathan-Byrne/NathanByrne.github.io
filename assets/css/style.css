@@ -177,15 +177,29 @@ body {
 	color: var(--text-muted);
 }
 
+/* First tag ("reason") — always this color regardless of content */
 .tag-reason {
 	color: var(--accent);
-	border-color: rgba(232, 163, 61, 0.35);
+	border-color: rgba(232, 163, 61, 0.4);
+	background: rgba(232, 163, 61, 0.08);
 }
 
-.tag-lang {
-	color: var(--accent-2);
-	border-color: rgba(95, 184, 179, 0.35);
-}
+.tag-p0  { color: #5fb8b3; border-color: rgba(95, 184, 179, 0.35); }
+.tag-p1  { color: #e0779d; border-color: rgba(224, 119, 157, 0.35); }
+.tag-p2  { color: #7ea8e0; border-color: rgba(126, 168, 224, 0.35); }
+.tag-p3  { color: #a68cf0; border-color: rgba(166, 140, 240, 0.35); }
+.tag-p4  { color: #8bc98e; border-color: rgba(139, 201, 142, 0.35); }
+.tag-p5  { color: #d9c15f; border-color: rgba(217, 193, 95, 0.35); }
+.tag-p6  { color: #e0725f; border-color: rgba(224, 114, 95, 0.35); }
+.tag-p7  { color: #6fd1d1; border-color: rgba(111, 209, 209, 0.35); }
+.tag-p8  { color: #f0a8d0; border-color: rgba(240, 168, 208, 0.35); }
+.tag-p9  { color: #b8e05f; border-color: rgba(184, 224, 95, 0.35); }
+.tag-p10 { color: #8f9ee0; border-color: rgba(143, 158, 224, 0.35); }
+.tag-p11 { color: #7ee0b8; border-color: rgba(126, 224, 184, 0.35); }
+.tag-p12 { color: #c79ef0; border-color: rgba(199, 158, 240, 0.35); }
+.tag-p13 { color: #7ec8e0; border-color: rgba(126, 200, 224, 0.35); }
+.tag-p14 { color: #e07ec8; border-color: rgba(224, 126, 200, 0.35); }
+.tag-p15 { color: #b0b0d0; border-color: rgba(176, 176, 208, 0.35); }
 
 .card-description {
 	color: var(--text-muted);
