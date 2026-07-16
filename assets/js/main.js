@@ -1,44 +1,69 @@
+// Additional Features to Include: Website Last Updated Text, Aminated Background / Updated Look?, Music Player, Social Links (GitHub, LinkedIn etc), Lilac Design, "Most Proud Of" Border, Browser Icon, Fix Mobile Display, Short Description on Non-Hover
+
 const projects = [
 	{
 		name: "PROJECT: Boardbreakers (In Development)",
 		tags: ["Independent Learning", "GDScript", "Godot", "Steamworks", "Aseprite", "GitHub", "Solo Project"],
-		thumbnail: "assets/images/boardbreakers.png",
+		thumbnail: "assets/images/boardbreakersCover.png",
+		personalFavourite: true,
+		screenshots: [],
+		links: [],
 		description: "Programming a project that is planned to be released on Steam in the future. The game's premise is a 4 player, 2.5D board game where each player moves and battles each other for control of the board, obtain items, collect money to eventually win the entire game. Players can create custom tailored builds using items in order to adapt to the ever incressing need to survive against their opponents."
 	},
 	{
 		name: "Personal Website",
 		tags: ["Independent Learning", "HTML", "CSS", "JavaScript", "Claude", "GitHub Pages", "GitHub", "Solo Project"],
-		thumbnail: "assets/images/website.png",
+		thumbnail: "assets/images/websiteCover.png",
+		personalFavourite: true,
+		screenshots: [],
+		links: [{label: "Project Repo", url: "https://github.com/Nathan-Byrne/NathanByrne.github.io"}],
 		description: "A personal website created to store a record of all my contributed projects in one space. The initial steps to create this page was helped by using Claude, and further development consisted of tweeks and improvments after file generation."
 	},
 	{
 		name: "FACE//WATCH",
 		tags: ["TVSJD Game Jam 2026", "GDScript", "Godot", "Aseprite", "Itch.io", "Excalidraw", "GitHub", "Team Project"],
-		thumbnail: "assets/images/faceWatch.png",
+		thumbnail: "assets/images/faceWatchCover.png",
+		personalFavourite: false,
+		screenshots: ["assets/images/faceWatchScreenshots/ss1.png", "assets/images/faceWatchScreenshots/ss2.png", "assets/images/faceWatchScreenshots/ss3.png", "assets/images/faceWatchScreenshots/ss4.png"],
+		links: [{label: "Project Repo (commits under the username 'ZetDerp')", url: "https://github.com/ZetDerp/Very-Serious-Game-Jam"}, {label: "Itch.io Page", url: "https://zetderp.itch.io/face-watch"}],
 		description: "Programmed the game 'FACE//WATCH', a face detection game where you attempt to spot the only unique face on a screen filled with non-unique faces. Later quotas introduce new effects that either distract, challenge or assist you. I was also in charge of designing the Itch.io page for the game."
 	},
 	{
 		name: "Shattered Side",
 		tags: ["South East Technological University Industry Day 2026", "C++", "SFML", "Azure", "DigitalOcean", "SQL", "UDP Networking", "Aseprite", "GitHub", "Solo Project"],
-		thumbnail: "assets/images/shatteredSide.png",
+		thumbnail: "assets/images/shatteredSideCover.png",
+		personalFavourite: true,
+		screenshots: ["assets/images/shatteredSideScreenshots/ss1.png", "assets/images/shatteredSideScreenshots/ss2.png", "assets/images/shatteredSideScreenshots/ss3.png", "assets/images/shatteredSideScreenshots/ss4.png", "assets/images/shatteredSideScreenshots/ss5.png", 
+						"assets/images/shatteredSideScreenshots/ss6.png", "assets/images/shatteredSideScreenshots/ss7.png", "assets/images/shatteredSideScreenshots/ss8.png", "assets/images/shatteredSideScreenshots/ss9.png", "assets/images/shatteredSideScreenshots/ss10.png", 
+						"assets/images/shatteredSideScreenshots/ss11.png", "assets/images/shatteredSideScreenshots/ss12.png"],
+		links: [{label: "Project Repo", url: "https://github.com/Nathan-Byrne/4thYearFinalProject"}, {label: "Project Website (SETU Showcase site can experience outages which are out of my control)", url: "https://showcase.setu.ie/C00281281/index.html"}],
 		description: "Programmed the game 'Shattered Side', a roguelike dungeon crawler game, where the goal is to keep your chosen characters alive while also managing both at the same time. The game not only can be played offline but also includes an online mode, which allows for account creation, leaderboards and online multiplayer."
 	},
 	{
 		name: "Astro Hopper",
 		tags: ["Games Fleadh 2024", "HTML", "CSS", "JavaScript", "GitHub", "Team Project"],
-		thumbnail: "assets/images/astroHopper.png",
+		thumbnail: "assets/images/astroHopperCover.png",
+		personalFavourite: false,
+		screenshots: ["assets/images/astroHopperScreenshots/ss1.png", "assets/images/astroHopperScreenshots/ss2.png", "assets/images/astroHopperScreenshots/ss3.png", "assets/images/astroHopperScreenshots/ss4.png"],
+		links: [{label: "Project Repo (commits under the username 'ZetDerp')", url: "https://github.com/Nathan-Byrne/GameFleadh"}],
 		description: "Programmed the game 'Astro Hopper', a tile-based puzzle game where you must reach the end of the level without retracing your steps and avoid incoming threats."
 	},
 	{
 		name: "Wewe Loves Time Travel",
 		tags: ["UI Programming Project 2023", "HTML", "CSS", "JavaScript", "PWA", "Codeberg", "Solo Project"],
-		thumbnail: "assets/images/wewe.png",
+		thumbnail: "assets/images/weweCover.png",
+		personalFavourite: false,
+		screenshots: [],
+		links: [{label: "Project Repo", url: "https://github.com/Nathan-Byrne/Wewe-Loves-Time-Travel"}],
 		description: "Programmed the game 'Wewe Loves Time Travel', a game inspired by 'Baba Is You'. This is a puzzle game where you must complete seemingly impossible levels by moving word blocks to alter the state of the current level."
 	},
 	{
 		name: "Temple Root",
 		tags: ["Game Jam 2023", "C++", "SFML", "Aseprite", "GitHub", "Team Project"],
-		thumbnail: "assets/images/templeRoot.png",
+		thumbnail: "assets/images/templeRootCover.png",
+		personalFavourite: false,
+		screenshots: [],
+		links: [{label: "Project Repo", url: "https://github.com/DarraghMcKernan/Temple-Root"}],
 		description: "Programmed the game 'Temple Root', a 2D puzzle game where you solve a series of puzzles in a room as fast as possible before being trapped."
 	}
 ];
@@ -56,7 +81,7 @@ function buildTagColorMap(list) {
 	let nextIndex = 0;
 	list.forEach(project => {
 		project.tags.forEach((tag, t) => {
-			if (t === 0) return; // first tag is the "reason" — colored separately
+			if (t === 0) return; // first tag is the "reason" (colored separately)
 			if (!map.has(tag)) {
 				map.set(tag, tagPalette[nextIndex % tagPalette.length]);
 				nextIndex++;
@@ -84,19 +109,43 @@ function renderCards(list) {
 	grid.innerHTML = "";
 	list.forEach((project, i) => {
 		const card = document.createElement("article");
-		card.className = "project-card";
+		card.className = "project-card" + (project.personalFavourite ? " is-favourite" : "");
+		card.tabIndex = 0;
+
 		const tagsHTML = project.tags
 			.map((tag, t) => `<span class="tag ${tagClass(tag, t === 0)}">${tag}</span>`)
 			.join("");
+
+		const screenshots = project.screenshots || [];
+		const screenshotsHTML = screenshots.length
+			? `<div class="hover-screenshots">${screenshots
+					.map(src => `<img src="${src}" alt="Additional screenshot of ${project.name}" loading="lazy">`)
+					.join("")}</div>`
+			: "";
+
+		const links = project.links || [];
+		const linksHTML = links.length
+			? `<div class="hover-links">${links
+					.map(l => `<a class="hover-link" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.label} ↗</a>`)
+					.join("")}</div>`
+			: `<p class="hover-empty-note">No available links.</p>`;
+
 		card.innerHTML = `
 			<div class="card-thumb-wrap">
 				<span class="card-index">${ordinal(list.length - i)} Project</span>
+				${project.personalFavourite ? `<span class="card-favourite">Personal Favourite</span>` : ""}
 				<img src="${project.thumbnail}" alt="Screenshot of ${project.name}" loading="lazy">
 			</div>
 			<div class="card-body">
 				<h2 class="card-title">${project.name}</h2>
 				<div class="card-meta">${tagsHTML}</div>
-				<p class="card-description">${project.description}</p>
+				<p class="card-hint">Hover / Click for additional details</p>
+			</div>
+			<div class="card-hover-panel">
+				<h3 class="hover-title">${project.name}</h3>
+				${screenshotsHTML}
+				<p class="hover-description">${project.description}</p>
+				${linksHTML}
 			</div>
 		`;
 		grid.appendChild(card);
@@ -104,3 +153,26 @@ function renderCards(list) {
 }
 
 renderCards(projects);
+
+// Touch/tap fallback: :hover doesn't exist on touch devices, so tapping a
+// card toggles its panel open. Tapping elsewhere (or another card) closes it.
+grid.addEventListener("click", (e) => {
+	if (e.target.closest(".hover-link")) return; // let real links navigate normally
+	const card = e.target.closest(".project-card");
+	if (!card) return;
+	const wasOpen = card.classList.contains("is-open");
+	document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
+	if (!wasOpen) card.classList.add("is-open");
+});
+
+document.addEventListener("click", (e) => {
+	if (!e.target.closest(".project-card")) {
+		document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
+	}
+});
+
+document.addEventListener("keydown", (e) => {
+	if (e.key === "Escape") {
+		document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
+	}
+});

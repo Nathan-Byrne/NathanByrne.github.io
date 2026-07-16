@@ -7,6 +7,7 @@
 	--text-muted: #8d8da3;
 	--accent: #e8a33d;   
 	--accent-2: #5fb8b3; 
+	--favourite: #f2637d;
 
 	--font-display: 'Space Grotesk', sans-serif;
 	--font-body: 'Inter', sans-serif;
@@ -46,11 +47,34 @@ body {
 	margin: 0 0 0.75rem;
 }
 
+.header-top {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+	margin-bottom: 1rem;
+}
+
+.pfp {
+	width: 96px;
+	height: 96px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid var(--accent);
+	background: var(--surface-raised);
+	flex-shrink: 0;
+}
+
+.header-text {
+	display: flex;
+	flex-direction: column;
+}
+
 .site-title {
 	font-family: var(--font-display);
 	font-size: clamp(2.5rem, 6vw, 4rem);
 	font-weight: 700;
-	margin: 0 0 1rem;
+	margin: 0 0 0.5rem;
 	letter-spacing: -0.02em;
 }
 
@@ -98,9 +122,21 @@ body {
 	max-width: 1100px;
 	margin: 0 auto;
 	padding: 2.5rem 1.5rem 5rem;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+	display: flex;
+	flex-wrap: wrap;
 	gap: 1.75rem;
+}
+
+.project-card {
+	flex: 1 1 480px;
+}
+
+/* If there's an odd number of cards, the last one is alone on the final row —
+   this centers it instead of leaving it flush left. Pure CSS, no JS needed:
+   :last-child + :nth-child(odd) is only true when the total count is odd. */
+.project-card:last-child:nth-child(odd) {
+	flex: 0 1 480px;
+	margin: 0 auto;
 }
 
 .project-card {
@@ -146,6 +182,26 @@ body {
 	border-bottom-right-radius: 8px;
 }
 
+.card-favourite {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: var(--favourite);
+	color: #14141c;
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	padding: 0.25rem 0.6rem;
+	border-bottom-left-radius: 8px;
+	z-index: 2;
+}
+
+.project-card.is-favourite:hover .card-index,
+.project-card.is-favourite:focus-within .card-index,
+.project-card.is-favourite.is-open .card-index {
+	background: var(--favourite);
+}
+
 .card-body {
 	padding: 1.25rem 1.35rem 1.5rem;
 	display: flex;
@@ -177,7 +233,7 @@ body {
 	color: var(--text-muted);
 }
 
-/* First tag ("reason") — always this color regardless of content */
+/* First tag "reason" (always this color regardless of content) */
 .tag-reason {
 	color: var(--accent);
 	border-color: rgba(232, 163, 61, 0.4);
@@ -205,6 +261,98 @@ body {
 	color: var(--text-muted);
 	font-size: 0.92rem;
 	margin: 0;
+}
+
+.card-hint {
+	font-family: var(--font-mono);
+	font-size: 0.72rem;
+	color: var(--text-muted);
+	opacity: 0.7;
+	margin: auto 0 0;
+}
+
+.card-hover-panel {
+	position: absolute;
+	inset: 0;
+	background: rgba(20, 20, 28, 0.97);
+	backdrop-filter: blur(2px);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.18s ease;
+	display: flex;
+	flex-direction: column;
+	padding: 1.25rem 1.35rem;
+	overflow-y: auto;
+	z-index: 5;
+}
+
+.project-card:hover .card-hover-panel,
+.project-card:focus-within .card-hover-panel,
+.project-card.is-open .card-hover-panel {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.hover-title {
+	font-family: var(--font-display);
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin: 0 0 0.9rem;
+	color: var(--text);
+}
+
+.hover-screenshots {
+	display: flex;
+	gap: 0.5rem;
+	overflow-x: auto;
+	margin-bottom: 0.9rem;
+	padding-bottom: 0.35rem;
+}
+
+.hover-screenshots img {
+	height: 90px;
+	width: auto;
+	border-radius: 6px;
+	border: 1px solid var(--border);
+	flex-shrink: 0;
+	object-fit: cover;
+}
+
+.hover-description {
+	color: var(--text);
+	font-size: 0.88rem;
+	line-height: 1.55;
+	margin: 0 0 1rem;
+}
+
+.hover-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: auto;
+}
+
+.hover-link {
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	padding: 0.35rem 0.75rem;
+	border: 1px solid var(--accent);
+	border-radius: 6px;
+	color: var(--accent);
+	text-decoration: none;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.hover-link:hover {
+	background: var(--accent);
+	color: #14141c;
+}
+
+.hover-empty-note {
+	color: var(--text-muted);
+	font-size: 0.8rem;
+	font-style: italic;
+	margin-top: auto;
 }
 
 .site-footer {
