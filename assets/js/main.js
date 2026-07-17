@@ -1,10 +1,11 @@
-// Additional Features to Include: Website Last Updated Text, Aminated Background / Updated Look?, Music Player, Social Links (GitHub, LinkedIn etc), Lilac Design, "Most Proud Of" Border, Browser Icon, Fix Mobile Display, Short Description on Non-Hover
+// Additional Features to Include: Website Last Updated Text, Social Links (GitHub, LinkedIn etc), Lilac Design (with non-animated version), Browser Icon, Fix Mobile Display, Larger Screenshots
 
 const projects = [
 	{
 		name: "PROJECT: Boardbreakers (In Development)",
 		tags: ["Independent Learning", "GDScript", "Godot", "Steamworks", "Aseprite", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/boardbreakersCover.png",
+		brief: "A 2.5D, Competitive Board Game where you Craft Builds and Forge New Dice to Come Out on Top Against your Friends",
 		personalFavourite: true,
 		screenshots: [],
 		links: [],
@@ -14,6 +15,7 @@ const projects = [
 		name: "Personal Website",
 		tags: ["Independent Learning", "HTML", "CSS", "JavaScript", "Claude", "GitHub Pages", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/websiteCover.png",
+		brief: "My Website, which Included Details About my Projects",
 		personalFavourite: true,
 		screenshots: [],
 		links: [{label: "Project Repo", url: "https://github.com/Nathan-Byrne/NathanByrne.github.io"}],
@@ -23,6 +25,7 @@ const projects = [
 		name: "FACE//WATCH",
 		tags: ["TVSJD Game Jam 2026", "GDScript", "Godot", "Aseprite", "Itch.io", "Excalidraw", "GitHub", "Team Project"],
 		thumbnail: "assets/images/faceWatchCover.png",
+		brief: "A Reaction Face Detection Game where the Game gets Infinitely Harder",
 		personalFavourite: false,
 		screenshots: ["assets/images/faceWatchScreenshots/ss1.png", "assets/images/faceWatchScreenshots/ss2.png", "assets/images/faceWatchScreenshots/ss3.png", "assets/images/faceWatchScreenshots/ss4.png"],
 		links: [{label: "Project Repo (commits under the username 'ZetDerp')", url: "https://github.com/ZetDerp/Very-Serious-Game-Jam"}, {label: "Itch.io Page", url: "https://zetderp.itch.io/face-watch"}],
@@ -32,6 +35,7 @@ const projects = [
 		name: "Shattered Side",
 		tags: ["South East Technological University Industry Day 2026", "C++", "SFML", "Azure", "DigitalOcean", "SQL", "UDP Networking", "Aseprite", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/shatteredSideCover.png",
+		brief: "A Dungeon Crawler where you Manage 2 Characters at Once",
 		personalFavourite: true,
 		screenshots: ["assets/images/shatteredSideScreenshots/ss1.png", "assets/images/shatteredSideScreenshots/ss2.png", "assets/images/shatteredSideScreenshots/ss3.png", "assets/images/shatteredSideScreenshots/ss4.png", "assets/images/shatteredSideScreenshots/ss5.png", 
 						"assets/images/shatteredSideScreenshots/ss6.png", "assets/images/shatteredSideScreenshots/ss7.png", "assets/images/shatteredSideScreenshots/ss8.png", "assets/images/shatteredSideScreenshots/ss9.png", "assets/images/shatteredSideScreenshots/ss10.png", 
@@ -43,6 +47,7 @@ const projects = [
 		name: "Astro Hopper",
 		tags: ["Games Fleadh 2024", "HTML", "CSS", "JavaScript", "GitHub", "Team Project"],
 		thumbnail: "assets/images/astroHopperCover.png",
+		brief: "A 2D Puzzle Game Focused on Avoiding Repeating Steps",
 		personalFavourite: false,
 		screenshots: ["assets/images/astroHopperScreenshots/ss1.png", "assets/images/astroHopperScreenshots/ss2.png", "assets/images/astroHopperScreenshots/ss3.png", "assets/images/astroHopperScreenshots/ss4.png"],
 		links: [{label: "Project Repo (commits under the username 'ZetDerp')", url: "https://github.com/Nathan-Byrne/GameFleadh"}],
@@ -52,8 +57,9 @@ const projects = [
 		name: "Wewe Loves Time Travel",
 		tags: ["UI Programming Project 2023", "HTML", "CSS", "JavaScript", "PWA", "Codeberg", "Solo Project"],
 		thumbnail: "assets/images/weweCover.png",
+		brief: "A Level Manipulation Game Inspired by 'Baba Is You'",
 		personalFavourite: false,
-		screenshots: [],
+		screenshots: ["assets/images/weweScreenshots/ss1.png", "assets/images/weweScreenshots/ss2.png", "assets/images/weweScreenshots/ss3.png", "assets/images/weweScreenshots/ss4.png"],
 		links: [{label: "Project Repo", url: "https://github.com/Nathan-Byrne/Wewe-Loves-Time-Travel"}],
 		description: "Programmed the game 'Wewe Loves Time Travel', a game inspired by 'Baba Is You'. This is a puzzle game where you must complete seemingly impossible levels by moving word blocks to alter the state of the current level."
 	},
@@ -61,6 +67,7 @@ const projects = [
 		name: "Temple Root",
 		tags: ["Game Jam 2023", "C++", "SFML", "Aseprite", "GitHub", "Team Project"],
 		thumbnail: "assets/images/templeRootCover.png",
+		brief: "A Fast Paced 2D Escape Room Puzzle Game",
 		personalFavourite: false,
 		screenshots: [],
 		links: [{label: "Project Repo", url: "https://github.com/DarraghMcKernan/Temple-Root"}],
@@ -139,6 +146,7 @@ function renderCards(list) {
 			<div class="card-body">
 				<h2 class="card-title">${project.name}</h2>
 				<div class="card-meta">${tagsHTML}</div>
+				<p class="card-brief">${project.brief}</p>
 				<p class="card-hint">Hover / Click for additional details</p>
 			</div>
 			<div class="card-hover-panel">
