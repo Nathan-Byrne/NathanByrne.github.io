@@ -1,4 +1,4 @@
-// Additional Features to Include: Website Last Updated Text, Social Links (GitHub, LinkedIn etc), Browser Icon, Fix Mobile Display, Larger Screenshots, Easter Egg (???)
+// Additional Features to Include: Website Last Updated Text, Social Links (GitHub, LinkedIn etc), Browser Icon, Fix Mobile Display, Easter Egg (???), Colour Selector
 
 const projects = [
 	{
@@ -10,7 +10,7 @@ const projects = [
 		inDevelopment: true,
 		screenshots: [],
 		links: [],
-		description: "Programming a project that is planned to be released on Steam in the future. The game's premise is a 4 player, 2.5D board game where each player moves and battles each other for control of the board, obtain items, collect money to eventually win the entire game. Players can create custom tailored builds using items in order to adapt to the ever incressing need to survive against their opponents."
+		description: "Programming a project that is planned to be released on Steam in the future. The game's premise is a 4 player, 2.5D board game where each player moves and battles each other for control of the board, obtain items, collect money to eventually win the entire game. Players can create custom tailored builds using items in order to adapt to the ever increasing need to survive against their opponents."
 	},
 	{
 		name: "GMTK Submission",
@@ -136,6 +136,7 @@ function renderCards(list) {
 		const card = document.createElement("article");
 		card.className = "project-card" + (project.personalFavourite ? " is-favourite" : "");
 		card.tabIndex = 0;
+		card.dataset.ordinal = String(list.length - i); // used by the "press a number" keyboard shortcut
 
 		const tagsHTML = project.tags
 			.map((tag, t) => `<span class="tag ${tagClass(tag, t === 0)}">${tag}</span>`)
@@ -143,9 +144,14 @@ function renderCards(list) {
 
 		const screenshots = project.screenshots || [];
 		const screenshotsHTML = screenshots.length
-			? `<div class="hover-screenshots">${screenshots
-					.map(src => `<img src="${src}" alt="Additional screenshot of ${project.name}" loading="lazy">`)
-					.join("")}</div>`
+			? `<div class="hover-screenshots">
+					${screenshots
+						.map((src, idx) => `<img class="ss-img${idx === 0 ? " active" : ""}" data-idx="${idx}" src="${src}" alt="Additional screenshot of ${project.name}" loading="lazy">`)
+						.join("")}
+					${screenshots.length > 1
+						? `<div class="ss-dots">${screenshots.map((_, idx) => `<span class="ss-dot${idx === 0 ? " active" : ""}"></span>`).join("")}</div>`
+						: ""}
+				</div>`
 			: "";
 
 		const links = project.links || [];
@@ -175,8 +181,41 @@ function renderCards(list) {
 				${linksHTML}
 			</div>
 		`;
+
 		grid.appendChild(card);
+
+		if (screenshots.length > 1) {
+			setupScreenshotSlideshow(card.querySelector(".hover-screenshots"));
+		}
 	});
+}
+
+// Cycles a card's screenshots one at a time with a slow crossfade. Clicking
+// the image jumps to the next screenshot immediately and restarts the
+// auto-advance timer, rather than waiting for the next scheduled change.
+function setupScreenshotSlideshow(container) {
+	const images = Array.from(container.querySelectorAll(".ss-img"));
+	const dots = Array.from(container.querySelectorAll(".ss-dot"));
+	let index = 0;
+	let intervalId = null;
+
+	function showIndex(newIndex) {
+		index = (newIndex + images.length) % images.length;
+		images.forEach((img, i) => img.classList.toggle("active", i === index));
+		dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+	}
+
+	function startAutoAdvance() {
+		clearInterval(intervalId);
+		intervalId = setInterval(() => showIndex(index + 1), 3500);
+	}
+
+	container.addEventListener("click", () => {
+		showIndex(index + 1);
+		startAutoAdvance(); // restart the timer so it doesn't double-advance right after a manual click
+	});
+
+	startAutoAdvance();
 }
 
 renderCards(projects);
@@ -184,7 +223,7 @@ renderCards(projects);
 // Touch/tap fallback: :hover doesn't exist on touch devices, so tapping a
 // card toggles its panel open. Tapping elsewhere (or another card) closes it.
 grid.addEventListener("click", (e) => {
-	if (e.target.closest(".hover-link")) return; // let real links navigate normally
+	if (e.target.closest(".hover-link, .hover-screenshots")) return; // let real links + screenshot clicks work without toggling the card
 	const card = e.target.closest(".project-card");
 	if (!card) return;
 	const wasOpen = card.classList.contains("is-open");
@@ -201,6 +240,16 @@ document.addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
 	if (e.key === "Escape") {
 		document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
+	}
+
+	// Press 1–9 to jump straight to the project showing that number badge.
+	if (/^[1-9]$/.test(e.key)) {
+		const target = document.querySelector(`.project-card[data-ordinal="${e.key}"]`);
+		if (target) {
+			document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
+			target.classList.add("is-open");
+			target.scrollIntoView({ behavior: "smooth", block: "center" });
+		}
 	}
 });
 
@@ -224,3 +273,155 @@ modeToggle.addEventListener("click", () => {
 	applySimpleMode(nowSimple);
 	localStorage.setItem("simpleMode", String(nowSimple));
 });
+
+// ---------------------------------------------------------
+// Background FX canvas: cursor trail and click-to-shoot stars.
+// Both disabled automatically while Simple Mode is on, so the
+// site stays fully static there.
+// ---------------------------------------------------------
+const fxCanvas = document.getElementById("fx-canvas");
+const fxCtx = fxCanvas.getContext("2d");
+
+// window.innerWidth/innerHeight include the scrollbar's width when one is
+// present, but the canvas element's actual rendered size (and mouse event
+// coordinates like e.clientX) don't. That mismatch caused the cursor trail
+// and other effects to drift further off the further right you moved.
+// document.documentElement.clientWidth/clientHeight excludes the scrollbar,
+// matching both the canvas's real size and clientX/clientY correctly.
+function getViewportWidth() {
+	return document.documentElement.clientWidth;
+}
+
+function getViewportHeight() {
+	return document.documentElement.clientHeight;
+}
+
+function resizeFxCanvas() {
+	const dpr = window.devicePixelRatio || 1;
+	fxCanvas.width = getViewportWidth() * dpr;
+	fxCanvas.height = getViewportHeight() * dpr;
+	fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeFxCanvas();
+window.addEventListener("resize", resizeFxCanvas);
+
+// --- Cursor trail ---
+let trailPoints = []; // { x, y, time }
+
+const trailStarColors = ["#f2e6fa", "#e6c9f2"]; // same tones used by the background star field
+
+window.addEventListener("mousemove", (e) => {
+	if (document.body.classList.contains("simple-mode")) return;
+	trailPoints.push({
+		x: e.clientX,
+		y: e.clientY,
+		time: performance.now(),
+		color: trailStarColors[Math.floor(Math.random() * trailStarColors.length)]
+	});
+});
+
+function drawCursorTrail(now) {
+	const lifespan = 600; // ms
+	trailPoints = trailPoints.filter(p => now - p.time < lifespan);
+
+	trailPoints.forEach(p => {
+		const age = now - p.time;
+		const t = 1 - age / lifespan; // 1 = fresh, 0 = about to vanish
+		fxCtx.beginPath();
+		fxCtx.arc(p.x, p.y, 1 + t * 0.8, 0, Math.PI * 2);
+		fxCtx.fillStyle = p.color;
+		fxCtx.globalAlpha = t;
+		fxCtx.fill();
+		fxCtx.globalAlpha = 1;
+	});
+}
+
+// --- Click-to-shoot stars ---
+let shootingStars = []; // { x, y, vx, vy, startTime }
+
+document.addEventListener("click", (e) => {
+	if (document.body.classList.contains("simple-mode")) return;
+	if (e.target.closest(".project-card, .mode-toggle, a, button")) return;
+	spawnShootingStar(e.clientX, e.clientY);
+});
+
+function spawnShootingStar(targetX, targetY) {
+	const margin = 120;
+	const w = getViewportWidth();
+	const h = getViewportHeight();
+	const side = Math.floor(Math.random() * 4); // 0 top, 1 right, 2 bottom, 3 left
+
+	let startX, startY;
+	if (side === 0)      { startX = Math.random() * w; startY = -margin; }
+	else if (side === 1) { startX = w + margin; startY = Math.random() * h; }
+	else if (side === 2) { startX = Math.random() * w; startY = h + margin; }
+	else                 { startX = -margin; startY = Math.random() * h; }
+
+	const dx = targetX - startX;
+	const dy = targetY - startY;
+
+	const travelMs = 550;   // time to reach the clicked point
+	const overshootMs = 250; // continues a little past it before fading out
+	const framesToTarget = travelMs / 16; // ~16ms per animation frame
+
+	shootingStars.push({
+		x: startX,
+		y: startY,
+		vx: dx / framesToTarget,
+		vy: dy / framesToTarget,
+		startTime: performance.now(),
+		lifespan: travelMs + overshootMs
+	});
+}
+
+function drawShootingStars(now) {
+	shootingStars = shootingStars.filter(s => now - s.startTime < s.lifespan);
+
+	shootingStars.forEach(s => {
+		const age = now - s.startTime;
+		const x = s.x + s.vx * (age / 16);
+		const y = s.y + s.vy * (age / 16);
+
+		// Stay fully opaque for most of the flight, only fading during
+		// the final ~30% of its life instead of dimming the whole time.
+		const lifeRatio = age / s.lifespan;
+		const fadeStart = 0.7;
+		const opacity = lifeRatio < fadeStart
+			? 1
+			: 1 - (lifeRatio - fadeStart) / (1 - fadeStart);
+
+		// Streak trailing behind the star's direction of travel
+		const trailX = x - s.vx * 8;
+		const trailY = y - s.vy * 8;
+
+		const gradient = fxCtx.createLinearGradient(trailX, trailY, x, y);
+		gradient.addColorStop(0, "rgba(240, 228, 250, 0)");
+		gradient.addColorStop(1, `rgba(240, 228, 250, ${opacity})`);
+
+		fxCtx.beginPath();
+		fxCtx.moveTo(trailX, trailY);
+		fxCtx.lineTo(x, y);
+		fxCtx.strokeStyle = gradient;
+		fxCtx.lineWidth = 3;
+		fxCtx.stroke();
+
+		fxCtx.beginPath();
+		fxCtx.arc(x, y, 3.5, 0, Math.PI * 2);
+		fxCtx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+		fxCtx.fill();
+	});
+}
+
+// --- Main animation loop ---
+function fxLoop() {
+	fxCtx.clearRect(0, 0, getViewportWidth(), getViewportHeight());
+
+	if (!document.body.classList.contains("simple-mode")) {
+		const now = performance.now();
+		drawCursorTrail(now);
+		drawShootingStars(now);
+	}
+
+	requestAnimationFrame(fxLoop);
+}
+requestAnimationFrame(fxLoop);
