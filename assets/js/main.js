@@ -1,4 +1,4 @@
-// Additional Features to Include: Website Last Updated Text, Social Links (GitHub, LinkedIn etc), Browser Icon, Fix Mobile Display, Easter Egg (???), Colour Selector
+// Additional Features to Include: Fix Mobile Display, Easter Egg (???)
 
 const projects = [
 	{
@@ -309,9 +309,19 @@ window.addEventListener("resize", resizeFxCanvas);
 let trailPoints = []; // { x, y, time }
 
 const trailStarColors = ["#f2e6fa", "#e6c9f2"]; // same tones used by the background star field
+const trailMinSpacing = 28; // px — minimum distance the cursor must travel before a new trail point is placed
+let lastTrailPoint = null;
 
 window.addEventListener("mousemove", (e) => {
 	if (document.body.classList.contains("simple-mode")) return;
+
+	if (lastTrailPoint) {
+		const dx = e.clientX - lastTrailPoint.x;
+		const dy = e.clientY - lastTrailPoint.y;
+		if (Math.sqrt(dx * dx + dy * dy) < trailMinSpacing) return;
+	}
+
+	lastTrailPoint = { x: e.clientX, y: e.clientY };
 	trailPoints.push({
 		x: e.clientX,
 		y: e.clientY,
@@ -425,3 +435,83 @@ function fxLoop() {
 	requestAnimationFrame(fxLoop);
 }
 requestAnimationFrame(fxLoop);
+
+// ---------------------------------------------------------
+// Theme color picker — recolors the animated background
+// (nebula glow, swirl blobs, wave bands) to shades derived
+// from whichever color is picked. The actual colour change
+// is slow (2.5s) via CSS custom-property transitions defined
+// in style.css (see the @property + :root transition rules).
+// ---------------------------------------------------------
+function hexToHue(hex) {
+	const r = parseInt(hex.slice(1, 3), 16) / 255;
+	const g = parseInt(hex.slice(3, 5), 16) / 255;
+	const b = parseInt(hex.slice(5, 7), 16) / 255;
+	const max = Math.max(r, g, b);
+	const min = Math.min(r, g, b);
+	let h = 0;
+	if (max !== min) {
+		const d = max - min;
+		switch (max) {
+			case r: h = ((g - b) / d + (g < b ? 6 : 0)); break;
+			case g: h = (b - r) / d + 2; break;
+			case b: h = (r - g) / d + 4; break;
+		}
+		h *= 60;
+	}
+	return h;
+}
+
+function applyThemeColor(hex) {
+	const h = hexToHue(hex);
+	const wrap = (deg) => ((h + deg) % 360 + 360) % 360;
+	const root = document.documentElement.style;
+
+	root.setProperty("--nebula-purple", `hsla(${wrap(-20)}, 55%, 45%, 0.4)`);
+	root.setProperty("--nebula-pink", `hsla(${wrap(40)}, 60%, 60%, 0.32)`);
+	root.setProperty("--swirl-1", `hsl(${wrap(0)}, 55%, 68%)`);
+	root.setProperty("--swirl-2", `hsl(${wrap(20)}, 60%, 75%)`);
+	root.setProperty("--swirl-3", `hsl(${wrap(-25)}, 45%, 60%)`);
+	root.setProperty("--swirl-4", `hsl(${wrap(10)}, 50%, 82%)`);
+	root.setProperty("--wave-1", `hsl(${wrap(20)}, 60%, 75%)`);
+	root.setProperty("--wave-2", `hsl(${wrap(-25)}, 45%, 60%)`);
+	root.setProperty("--wave-3", `hsl(${wrap(0)}, 40%, 92%)`);
+	root.setProperty("--wave-accent", `hsl(${wrap(-25)}, 45%, 60%)`);
+}
+
+const themeSwatches = document.querySelectorAll(".theme-swatch");
+const storedThemeColor = localStorage.getItem("themeColor");
+
+function setActiveSwatch(color) {
+	themeSwatches.forEach(btn => btn.classList.toggle("active", btn.dataset.color === color));
+}
+
+if (storedThemeColor) {
+	applyThemeColor(storedThemeColor);
+	setActiveSwatch(storedThemeColor);
+}
+
+themeSwatches.forEach(btn => {
+	btn.addEventListener("click", () => {
+		const color = btn.dataset.color;
+		applyThemeColor(color);
+		setActiveSwatch(color);
+		localStorage.setItem("themeColor", color);
+	});
+});
+
+// ---------------------------------------------------------
+// "Last updated" footer text — driven by document.lastModified,
+// so it stays accurate automatically as you push new commits,
+// no manual date-editing required.
+// ---------------------------------------------------------
+const lastUpdatedEl = document.getElementById("last-updated");
+if (lastUpdatedEl) {
+	const modifiedDate = new Date(document.lastModified);
+	const formatted = modifiedDate.toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric"
+	});
+	lastUpdatedEl.textContent = `Last updated ${formatted}`;
+}

@@ -16,10 +16,43 @@
 	--swirl-2: #e8a3c4;
 	--swirl-3: #9a6fc9;
 	--swirl-4: #d9b8ea;
+	--wave-1: #e8a3c4;
+	--wave-2: #9a6fc9;
+	--wave-3: #f0e4fa;
+	--wave-accent: #9a6fc9;
 
 	--font-display: 'Space Grotesk', sans-serif;
 	--font-body: 'Inter', sans-serif;
 	--font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Registering these as <color>-typed custom properties (instead of the
+   default "universal" type) is what makes them animatable — without this,
+   the browser treats a custom property change as an instant flip with no
+   in-between frames, no matter what transition you put on it. */
+@property --nebula-purple { syntax: '<color>'; inherits: true; initial-value: rgba(122, 79, 174, 0.4); }
+@property --nebula-pink   { syntax: '<color>'; inherits: true; initial-value: rgba(216, 121, 172, 0.32); }
+@property --swirl-1       { syntax: '<color>'; inherits: true; initial-value: #c48fd6; }
+@property --swirl-2       { syntax: '<color>'; inherits: true; initial-value: #e8a3c4; }
+@property --swirl-3       { syntax: '<color>'; inherits: true; initial-value: #9a6fc9; }
+@property --swirl-4       { syntax: '<color>'; inherits: true; initial-value: #d9b8ea; }
+@property --wave-1        { syntax: '<color>'; inherits: true; initial-value: #e8a3c4; }
+@property --wave-2        { syntax: '<color>'; inherits: true; initial-value: #9a6fc9; }
+@property --wave-3        { syntax: '<color>'; inherits: true; initial-value: #f0e4fa; }
+@property --wave-accent   { syntax: '<color>'; inherits: true; initial-value: #9a6fc9; }
+
+:root {
+	transition:
+		--nebula-purple 2.5s ease,
+		--nebula-pink 2.5s ease,
+		--swirl-1 2.5s ease,
+		--swirl-2 2.5s ease,
+		--swirl-3 2.5s ease,
+		--swirl-4 2.5s ease,
+		--wave-1 2.5s ease,
+		--wave-2 2.5s ease,
+		--wave-3 2.5s ease,
+		--wave-accent 2.5s ease;
 }
 
 * { box-sizing: border-box; }
@@ -56,7 +89,7 @@ body {
 #fx-canvas {
 	position: fixed;
 	inset: 0;
-	z-index: 60;
+	z-index: -1;
 	pointer-events: none;
 	width: 100%;
 	height: 100%;
@@ -213,25 +246,29 @@ body {
 }
 
 .wave-band-1 {
-	fill: rgba(232, 163, 196, 0.06);
+	fill: var(--wave-1);
+	opacity: 0.06;
 	animation: stretch-band-1 5s ease-in-out infinite alternate;
 }
 
 .wave-band-2 {
-	fill: rgba(154, 111, 201, 0.05);
+	fill: var(--wave-2);
+	opacity: 0.05;
 	animation: stretch-band-2 6s ease-in-out infinite alternate;
 	animation-delay: -2s;
 }
 
 .wave-band-3 {
-	fill: rgba(240, 228, 250, 0.1);
+	fill: var(--wave-3);
+	opacity: 0.1;
 	mix-blend-mode: screen;
 	animation: stretch-band-3 4s ease-in-out infinite alternate;
 	animation-delay: -1s;
 }
 
 .wave-band-accent {
-	fill: rgba(154, 111, 201, 0.045);
+	fill: var(--wave-accent);
+	opacity: 0.045;
 	animation: stretch-band-accent 5.5s ease-in-out infinite alternate;
 	animation-delay: -2.5s;
 }
@@ -305,6 +342,43 @@ body.simple-mode .project-card {
 /* ---------------------------------------------------------
    Simple mode toggle — floating button, bottom-right
 --------------------------------------------------------- */
+.theme-swatches {
+	position: fixed;
+	bottom: 1.5rem;
+	left: 1.5rem;
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.7rem 0.5rem;
+	border-radius: 999px;
+	border: 1px solid var(--border);
+	background: rgba(30, 20, 48, 0.75);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.theme-swatch {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: var(--sw);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	padding: 0;
+	cursor: pointer;
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-swatch:hover {
+	transform: scale(1.2);
+}
+
+.theme-swatch.active {
+	box-shadow: 0 0 0 2px rgba(20, 14, 30, 0.9), 0 0 0 4px #ffffff;
+}
+
 .mode-toggle {
 	position: fixed;
 	bottom: 1.5rem;
@@ -772,6 +846,40 @@ body.simple-mode .mode-toggle .dot {
 	inset: 0;
 	background: rgba(8, 5, 14, 0.55);
 	z-index: -1;
+}
+
+.social-links {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.social-links a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	border: 1px solid var(--border);
+	color: var(--text-muted);
+	transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.social-links svg {
+	width: 16px;
+	height: 16px;
+}
+
+.social-links a:hover {
+	color: var(--accent);
+	border-color: var(--accent);
+	transform: translateY(-2px);
+}
+
+#last-updated {
+	margin: 0 0 0.4rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
