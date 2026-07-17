@@ -1,13 +1,21 @@
 :root {
-	--bg: #14141c;
-	--surface: #1c1c28;
-	--surface-raised: #23232f;
-	--border: #34343f;
-	--text: #f0eee6;
-	--text-muted: #8d8da3;
-	--accent: #e8a33d;   
-	--accent-2: #5fb8b3; 
+	--bg: #120e1c;
+	--surface: rgba(38, 24, 62, 0.55);
+	--surface-raised: rgba(48, 32, 76, 0.6);
+	--border: rgba(201, 160, 240, 0.22);
+	--text: #f3ecfb;
+	--text-muted: #b6a6cf;
+	--accent: #b98ee6;
+	--accent-2: #e79ac7;
 	--favourite: #f2637d;
+	--in-development: #7dd3e0;
+
+	--nebula-purple: rgba(122, 79, 174, 0.4);
+	--nebula-pink: rgba(216, 121, 172, 0.32);
+	--swirl-1: #c48fd6;
+	--swirl-2: #e8a3c4;
+	--swirl-3: #9a6fc9;
+	--swirl-4: #d9b8ea;
 
 	--font-display: 'Space Grotesk', sans-serif;
 	--font-body: 'Inter', sans-serif;
@@ -16,22 +24,333 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+	scroll-behavior: smooth;
+	background: var(--bg);
+}
 
 body {
 	margin: 0;
-	background: var(--bg);
+	background: transparent;
 	color: var(--text);
 	font-family: var(--font-body);
 	line-height: 1.5;
+	position: relative;
+}
+
+/* ---------------------------------------------------------
+   Cosmic background — fixed behind all content.
+   Layers: base nebula glow, drifting marble swirls, twinkling stars.
+--------------------------------------------------------- */
+.cosmic-bg {
+	position: fixed;
+	inset: 0;
+	z-index: -2;
+	overflow: hidden;
+	background:
+		radial-gradient(circle at 18% 25%, var(--nebula-purple), transparent 55%),
+		radial-gradient(circle at 82% 70%, var(--nebula-pink), transparent 55%),
+		var(--bg);
+}
+
+.stars {
+	position: absolute;
+	inset: 0;
+	width: 2px;
+	height: 2px;
+	background: transparent;
+	box-shadow:
+		63.9vw 2.5vh 0 #f2e6fa,
+		24.5vw 14.0vh 0 #f2e6fa,
+		67.7vw 89.2vh 0 #f2e6fa,
+		59.0vw 3.2vh 0 #f2e6fa,
+		21.9vw 50.5vh 0 #f2e6fa,
+		56.1vw 71.6vh 0 #e6c9f2,
+		54.5vw 22.0vh 0 #f2e6fa,
+		27.8vw 86.9vh 0 #f2e6fa,
+		69.8vw 34.0vh 0 #f2e6fa,
+		21.5vw 76.3vh 0 #f2e6fa,
+		9.3vw 9.7vh 0 #f2e6fa,
+		60.4vw 80.7vh 0 #e6c9f2,
+		45.9vw 12.5vh 0 #f2e6fa,
+		7.9vw 29.3vh 0 #e6c9f2,
+		61.9vw 86.2vh 0 #f2e6fa,
+		19.2vw 7.0vh 0 #e6c9f2,
+		22.8vw 28.9vh 0 #f2e6fa,
+		85.5vw 86.6vh 0 #f2e6fa,
+		27.8vw 63.6vh 0 #f2e6fa,
+		16.3vw 35.5vh 0 #e6c9f2,
+		26.7vw 93.7vh 0 #e6c9f2,
+		7.1vw 63.5vh 0 #f2e6fa,
+		72.9vw 16.3vh 0 #f2e6fa,
+		27.0vw 92.5vh 0 #e6c9f2,
+		55.7vw 68.5vh 0 #f2e6fa,
+		22.9vw 3.2vh 0 #f2e6fa,
+		40.1vw 6.6vh 0 #f2e6fa,
+		87.6vw 31.5vh 0 #e6c9f2,
+		49.9vw 88.5vh 0 #e6c9f2,
+		45.9vw 26.5vh 0 #f2e6fa,
+		74.5vw 53.9vh 0 #e6c9f2,
+		58.5vw 89.8vh 0 #f2e6fa,
+		36.2vw 99.7vh 0 #f2e6fa,
+		51.0vw 9.1vh 0 #f2e6fa,
+		86.1vw 15.3vh 0 #f2e6fa,
+		79.2vw 42.2vh 0 #f2e6fa,
+		38.5vw 59.6vh 0 #f2e6fa,
+		52.9vw 97.1vh 0 #f2e6fa,
+		68.0vw 11.5vh 0 #f2e6fa,
+		75.1vw 76.9vh 0 #f2e6fa,
+		11.2vw 43.5vh 0 #f2e6fa,
+		0.3vw 72.2vh 0 #e6c9f2,
+		26.3vw 50.1vh 0 #f2e6fa,
+		50.8vw 10.6vh 0 #e6c9f2,
+		29.8vw 63.9vh 0 #f2e6fa,
+		19.9vw 37.4vh 0 #f2e6fa,
+		53.9vw 77.9vh 0 #f2e6fa,
+		91.8vw 59.9vh 0 #f2e6fa,
+		1.9vw 92.9vh 0 #f2e6fa,
+		23.9vw 24.1vh 0 #f2e6fa;
+	animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+.stars.stars-2 {
+	animation-duration: 9s;
+	animation-delay: -3s;
+	opacity: 0.6;
+}
+
+@keyframes twinkle {
+	0% { opacity: 0.35; }
+	100% { opacity: 0.9; }
+}
+
+.swirl {
+	position: absolute;
+	border-radius: 46% 54% 60% 40% / 50% 45% 55% 50%;
+	filter: blur(40px);
+	opacity: 0.65;
+	mix-blend-mode: screen;
+	will-change: transform, border-radius;
+}
+
+.swirl-1 {
+	width: 620px;
+	height: 620px;
+	top: -140px;
+	left: -120px;
+	background: var(--swirl-1);
+	animation: drift1 14s ease-in-out infinite alternate;
+}
+
+.swirl-2 {
+	width: 520px;
+	height: 520px;
+	bottom: -160px;
+	right: -100px;
+	background: var(--swirl-2);
+	animation: drift2 17s ease-in-out infinite alternate;
+}
+
+.swirl-3 {
+	width: 460px;
+	height: 460px;
+	top: 30%;
+	right: 15%;
+	background: var(--swirl-3);
+	animation: drift3 19s ease-in-out infinite alternate;
+}
+
+.swirl-4 {
+	width: 380px;
+	height: 380px;
+	bottom: 10%;
+	left: 20%;
+	background: var(--swirl-4);
+	animation: drift1 15s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift1 {
+	0%   { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 46% 54% 60% 40% / 50% 45% 55% 50%; }
+	50%  { transform: translate(260px, 170px) scale(1.35) rotate(70deg); border-radius: 58% 42% 45% 55% / 40% 60% 40% 60%; }
+	100% { transform: translate(-150px, 280px) scale(0.75) rotate(-45deg); border-radius: 40% 60% 55% 45% / 55% 45% 60% 40%; }
+}
+
+@keyframes drift2 {
+	0%   { transform: translate(0, 0) scale(1) rotate(0deg); border-radius: 50% 50% 40% 60% / 45% 55% 45% 55%; }
+	50%  { transform: translate(-220px, -240px) scale(1.4) rotate(-60deg); border-radius: 42% 58% 55% 45% / 60% 40% 55% 45%; }
+	100% { transform: translate(170px, -90px) scale(0.7) rotate(40deg); border-radius: 60% 40% 45% 55% / 40% 60% 45% 55%; }
+}
+
+@keyframes drift3 {
+	0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+	50%  { transform: translate(-190px, 210px) scale(1.4) rotate(-50deg); }
+	100% { transform: translate(160px, -160px) scale(0.72) rotate(55deg); }
+}
+
+/* ---------------------------------------------------------
+   Wavy lines — a few thin flowing lines that bob up and down,
+   like a flag rippling in slow motion. Kept sparse (3 lines)
+   so they read as an accent, not a busy pattern.
+--------------------------------------------------------- */
+.wave-lines {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.wave-band {
+	will-change: d;
+}
+
+.wave-band-1 {
+	fill: rgba(232, 163, 196, 0.06);
+	animation: stretch-band-1 5s ease-in-out infinite alternate;
+}
+
+.wave-band-2 {
+	fill: rgba(154, 111, 201, 0.05);
+	animation: stretch-band-2 6s ease-in-out infinite alternate;
+	animation-delay: -2s;
+}
+
+.wave-band-3 {
+	fill: rgba(240, 228, 250, 0.1);
+	mix-blend-mode: screen;
+	animation: stretch-band-3 4s ease-in-out infinite alternate;
+	animation-delay: -1s;
+}
+
+.wave-band-accent {
+	fill: rgba(154, 111, 201, 0.045);
+	animation: stretch-band-accent 5.5s ease-in-out infinite alternate;
+	animation-delay: -2.5s;
+}
+
+/* Each keyframe pair keeps identical path command structure (M/C/L/Z counts
+   and x-coordinates) so the browser interpolates smoothly — only the y
+   control points shift, so the wave stretches and relaxes at its bends
+   rather than sliding sideways. Shapes extend past x=0 and x=1000 (the
+   viewBox edges) on both sides, so no cut edge is ever exposed while
+   the bends stretch in and out. */
+@keyframes stretch-band-1 {
+	0% {
+		d: path("M-50,300 C120,250 240,340 380,300 C520,260 640,350 780,310 C900,280 980,290 1050,300 L1050,500 L-50,500 Z");
+	}
+	100% {
+		d: path("M-50,300 C120,180 240,396 380,300 C520,204 640,420 780,324 C900,252 980,276 1050,300 L1050,500 L-50,500 Z");
+	}
+}
+
+@keyframes stretch-band-2 {
+	0% {
+		d: path("M-50,230 C150,270 300,190 460,235 C600,275 720,200 860,240 C920,260 970,245 1050,235 L1050,500 L-50,500 Z");
+	}
+	100% {
+		d: path("M-50,230 C150,323.2 300,131.2 460,239.2 C600,335.2 720,155.2 860,251.2 C920,299.2 970,263.2 1050,239.2 L1050,500 L-50,500 Z");
+	}
+}
+
+@keyframes stretch-band-3 {
+	0% {
+		d: path("M-50,120 C140,90 260,180 420,140 C580,95 700,190 860,150 C930,130 970,140 1050,150 L1050,240 C860,280 700,200 540,245 C380,290 240,210 100,250 C40,258 -10,248 -50,240 Z");
+	}
+	100% {
+		d: path("M-50,120 C140,30 260,228 420,140 C580,41 700,250 860,162 C930,118 970,140 1050,162 L1050,240 C860,322 700,146 540,245 C380,344 240,168 100,256 C40,273.6 -10,251.6 -50,234 Z");
+	}
+}
+
+@keyframes stretch-band-accent {
+	0% {
+		d: path("M760,0 C820,55 900,35 935,95 C965,155 900,190 845,150 C795,110 745,55 760,0 Z");
+	}
+	100% {
+		d: path("M668.2,-87.3 C782.2,17.2 934.2,-20.8 1000.7,93.2 C1057.7,207.2 934.2,273.7 829.7,197.7 C734.7,121.7 639.7,17.2 668.2,-87.3 Z");
+	}
+}
+
+/* ---------------------------------------------------------
+   Simple mode — freezes all motion, flattens glass surfaces
+--------------------------------------------------------- */
+body.simple-mode .swirl,
+body.simple-mode .stars,
+body.simple-mode .wave-band {
+	animation: none !important;
+}
+
+body.simple-mode .stars {
+	opacity: 0.7;
+}
+
+body.simple-mode * {
+	transition: none !important;
+	animation: none !important;
+}
+
+body.simple-mode .project-card {
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	background: #201430;
+}
+
+/* ---------------------------------------------------------
+   Simple mode toggle — floating button, bottom-right
+--------------------------------------------------------- */
+.mode-toggle {
+	position: fixed;
+	bottom: 1.5rem;
+	right: 1.5rem;
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.6rem 1rem;
+	border-radius: 999px;
+	border: 1px solid var(--border);
+	background: rgba(30, 20, 48, 0.75);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
+	color: var(--text);
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+	cursor: pointer;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+	transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.mode-toggle:hover {
+	border-color: var(--accent);
+	transform: translateY(-2px);
+}
+
+.mode-toggle .dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--accent);
+	flex-shrink: 0;
+}
+
+body.simple-mode .mode-toggle .dot {
+	background: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.swirl, .stars, .wave-band { animation: none !important; }
 }
 
 .site-header {
-	padding: 5rem 1.5rem 3rem;
+	padding: 2.5rem 1.5rem 1.5rem;
 	border-bottom: 1px solid var(--border);
-	background:
-		radial-gradient(circle at 15% 20%, rgba(232, 163, 61, 0.08), transparent 45%),
-		var(--bg);
+	position: relative;
+}
+
+.site-header::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: rgba(8, 5, 14, 0.55);
+	z-index: -1;
 }
 
 .header-inner {
@@ -50,6 +369,7 @@ body {
 .header-top {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	gap: 1.5rem;
 	flex-wrap: wrap;
 	margin-bottom: 1rem;
@@ -68,6 +388,8 @@ body {
 .header-text {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
 .site-title {
@@ -98,7 +420,9 @@ body {
 	font-family: var(--font-mono);
 	font-size: 0.8rem;
 	color: var(--text-muted);
-	background: var(--surface);
+	background: rgba(38, 24, 62, 0.5);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
 	border: 1px solid var(--border);
 	border-radius: 999px;
 	padding: 0.4rem 0.9rem;
@@ -143,16 +467,20 @@ body {
 	position: relative;
 	background: var(--surface);
 	border: 1px solid var(--border);
-	border-radius: 10px;
+	border-radius: 14px;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	transition: transform 0.18s ease, border-color 0.18s ease;
+	backdrop-filter: blur(18px) saturate(150%);
+	-webkit-backdrop-filter: blur(18px) saturate(150%);
+	box-shadow: 0 4px 30px rgba(60, 30, 90, 0.25);
+	transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .project-card:hover {
 	transform: translateY(-3px);
 	border-color: var(--accent);
+	box-shadow: 0 10px 40px rgba(185, 142, 230, 0.3);
 }
 
 .project-card.is-favourite:hover,
@@ -208,6 +536,22 @@ body {
 	background: var(--favourite);
 }
 
+.card-in-development {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: var(--in-development);
+	color: #0c1f22;
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	text-align: center;
+	padding: 0.35rem 0.6rem;
+	letter-spacing: 0.04em;
+	z-index: 2;
+}
+
 .card-body {
 	padding: 1.25rem 1.35rem 1.5rem;
 	display: flex;
@@ -233,6 +577,7 @@ body {
 .tag {
 	font-family: var(--font-mono);
 	font-size: 0.72rem;
+	font-weight: 700;
 	padding: 0.2rem 0.55rem;
 	border-radius: 4px;
 	border: 1px solid var(--border);
@@ -280,8 +625,8 @@ body {
 .card-hover-panel {
 	position: absolute;
 	inset: 0;
-	background: rgba(20, 20, 28, 0.97);
-	backdrop-filter: blur(2px);
+	background: rgba(18, 12, 30, 0.94);
+	backdrop-filter: blur(6px);
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.18s ease;
@@ -373,11 +718,20 @@ body {
 
 .site-footer {
 	text-align: center;
-	padding: 2rem 1.5rem 3rem;
+	padding: 2rem 1.5rem 4.5rem;
 	color: var(--text-muted);
 	font-family: var(--font-mono);
 	font-size: 0.8rem;
 	border-top: 1px solid var(--border);
+	position: relative;
+}
+
+.site-footer::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: rgba(8, 5, 14, 0.55);
+	z-index: -1;
 }
 
 @media (prefers-reduced-motion: reduce) {

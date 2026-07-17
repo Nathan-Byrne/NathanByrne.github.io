@@ -12,6 +12,27 @@
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+	<div class="cosmic-bg" aria-hidden="true">
+		<div class="swirl swirl-1"></div>
+		<div class="swirl swirl-2"></div>
+		<div class="swirl swirl-3"></div>
+		<div class="swirl swirl-4"></div>
+		<div class="stars"></div>
+		<div class="stars stars-2"></div>
+
+		<svg class="wave-lines" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true">
+			<path class="wave-band wave-band-1" d="M-50,300 C120,250 240,340 380,300 C520,260 640,350 780,310 C900,280 980,290 1050,300 L1050,500 L-50,500 Z" />
+			<path class="wave-band wave-band-2" d="M-50,230 C150,270 300,190 460,235 C600,275 720,200 860,240 C920,260 970,245 1050,235 L1050,500 L-50,500 Z" />
+			<path class="wave-band wave-band-3" d="M-50,120 C140,90 260,180 420,140 C580,95 700,190 860,150 C930,130 970,140 1050,150 L1050,240 C860,280 700,200 540,245 C380,290 240,210 100,250 C40,258 -10,248 -50,240 Z" />
+			<path class="wave-band wave-band-accent" d="M760,0 C820,55 900,35 935,95 C965,155 900,190 845,150 C795,110 745,55 760,0 Z" />
+		</svg>
+	</div>
+
+	<button class="mode-toggle" id="mode-toggle" type="button" aria-pressed="false">
+		<span class="dot" aria-hidden="true"></span>
+		<span id="mode-toggle-label">Simple mode</span>
+	</button>
+
 	<header class="site-header">
 		<div class="header-inner">
 			<div class="header-top">
