@@ -720,7 +720,13 @@ body.simple-mode .mode-toggle .dot {
 	z-index: 5;
 }
 
-.project-card:hover .card-hover-panel,
+@media (hover: hover) and (pointer: fine) {
+	.project-card:hover .card-hover-panel {
+		opacity: 1;
+		pointer-events: auto;
+	}
+}
+
 .project-card:focus-within .card-hover-panel,
 .project-card.is-open .card-hover-panel {
 	opacity: 1;
