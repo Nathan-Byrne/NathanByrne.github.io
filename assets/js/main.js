@@ -95,10 +95,10 @@ const projects = [
 
 const mods = [
 	{
-		name: "Placeholder",
+		name: "Deadlock",
 		tags: ["Independent Learning"],
 		thumbnail: "assets/images/placeholder.png",
-		brief: "Placeholder.",
+		brief: "Modding Done: Custom Models and Colour Palette Swaps.",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
@@ -106,10 +106,10 @@ const mods = [
 		description: "Placeholder."
 	},
 	{
-		name: "Placeholder",
+		name: "UNBEATABLE",
 		tags: ["Independent Learning"],
 		thumbnail: "assets/images/placeholder.png",
-		brief: "Placeholder.",
+		brief: "Modding Done: Custom Charts (using Dev Editor).",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
@@ -117,16 +117,27 @@ const mods = [
 		description: "Placeholder."
 	},
 	{
-		name: "Placeholder",
+		name: "Rift of the Necrodancer",
 		tags: ["Independent Learning"],
 		thumbnail: "assets/images/placeholder.png",
-		brief: "Placeholder.",
+		brief: "Modding Done: Custom Charts (using Dev Editor).",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
 		links: [],
 		description: "Placeholder."
 	},
+	{
+		name: "Guilty Gear -Strive-",
+		tags: ["Independent Learning"],
+		thumbnail: "assets/images/placeholder.png",
+		brief: "Modding Done: Colour Palette Swaps.",
+		personalFavourite: false,
+		inDevelopment: false,
+		screenshots: [],
+		links: [],
+		description: "Placeholder."
+	}
 ];
 
 
