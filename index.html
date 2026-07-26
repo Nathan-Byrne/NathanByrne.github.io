@@ -59,7 +59,25 @@
 		</div>
 	</header>
 
-	<main class="project-grid" id="project-grid" aria-live="polite"></main>
+	<nav class="page-tabs" role="tablist" aria-label="Page sections">
+		<button class="page-tab active" type="button" role="tab" aria-selected="true" data-tab="about">About Me</button>
+		<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="projects">Projects</button>
+		<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="modding">Modding</button>
+	</nav>
+
+	<section class="about-panel" id="about-panel" role="tabpanel">
+		<div class="about-card">
+			<h2 class="about-title">About Me</h2>
+			<p class="about-text">
+				Placeholder Paragraph 1.
+			</p>
+			<p class="about-text">
+				Placeholder Paragraph 2.
+			</p>
+		</div>
+	</section>
+
+	<main class="project-grid" id="project-grid" role="tabpanel" aria-live="polite" hidden></main>
 
 	<footer class="site-footer">
 		<div class="social-links">

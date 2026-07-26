@@ -93,6 +93,42 @@ const projects = [
 	}
 ];
 
+const mods = [
+	{
+		name: "Placeholder",
+		tags: ["Independent Learning"],
+		thumbnail: "assets/images/placeholder.png",
+		brief: "Placeholder.",
+		personalFavourite: false,
+		inDevelopment: false,
+		screenshots: [],
+		links: [],
+		description: "Placeholder."
+	},
+	{
+		name: "Placeholder",
+		tags: ["Independent Learning"],
+		thumbnail: "assets/images/placeholder.png",
+		brief: "Placeholder.",
+		personalFavourite: false,
+		inDevelopment: false,
+		screenshots: [],
+		links: [],
+		description: "Placeholder."
+	},
+	{
+		name: "Placeholder",
+		tags: ["Independent Learning"],
+		thumbnail: "assets/images/placeholder.png",
+		brief: "Placeholder.",
+		personalFavourite: false,
+		inDevelopment: false,
+		screenshots: [],
+		links: [],
+		description: "Placeholder."
+	},
+];
+
 
 const grid = document.getElementById("project-grid");
 
@@ -130,7 +166,7 @@ function ordinal(n) {
 	return `${n}${suffix}`;
 }
 
-function renderCards(list) {
+function renderCards(list, badgeSuffix = "Project") {
 	grid.innerHTML = "";
 	list.forEach((project, i) => {
 		const card = document.createElement("article");
@@ -163,7 +199,7 @@ function renderCards(list) {
 
 		card.innerHTML = `
 			<div class="card-thumb-wrap">
-				<span class="card-index">${ordinal(list.length - i)} Project</span>
+				<span class="card-index">${`${ordinal(list.length - i)} ${badgeSuffix}`.trim()}</span>
 				${project.personalFavourite ? `<span class="card-favourite">Personal Favourite</span>` : ""}
 				<img src="${project.thumbnail}" alt="Screenshot of ${project.name}" loading="lazy">
 				${project.inDevelopment ? `<span class="card-in-development">In Development</span>` : ""}
@@ -515,3 +551,38 @@ if (lastUpdatedEl) {
 	});
 	lastUpdatedEl.textContent = `Last updated ${formatted}`;
 }
+
+// ---------------------------------------------------------
+// Page tabs — re-renders the same grid from a different data
+// array depending on which tab is selected, rather than keeping
+// two separate DOM sections around.
+// ---------------------------------------------------------
+const pageTabs = document.querySelectorAll(".page-tab");
+
+const tabContentMap = {
+	projects: { list: projects, badgeSuffix: "Project" },
+	modding: { list: mods, badgeSuffix: "" }
+};
+
+const aboutPanel = document.getElementById("about-panel");
+
+pageTabs.forEach(tab => {
+	tab.addEventListener("click", () => {
+		const target = tab.dataset.tab;
+
+		pageTabs.forEach(t => {
+			t.classList.toggle("active", t === tab);
+			t.setAttribute("aria-selected", String(t === tab));
+		});
+
+		if (target === "about") {
+			aboutPanel.hidden = false;
+			grid.hidden = true;
+		} else {
+			aboutPanel.hidden = true;
+			grid.hidden = false;
+			const { list, badgeSuffix } = tabContentMap[target];
+			renderCards(list, badgeSuffix);
+		}
+	});
+});
