@@ -1,4 +1,4 @@
-// Additional Features to Include: Fix Mobile Display, Easter Egg (???)
+// Additional Features to Include: Fix Mobile Display, Easter Egg (???), Shooting Stars get Stuck on Sidebar
 
 const projects = [
 	{
@@ -96,12 +96,12 @@ const projects = [
 const mods = [
 	{
 		name: "Deadlock",
-		tags: ["Independent Learning"],
-		thumbnail: "assets/images/placeholder.png",
+		tags: ["Independent Learning", "Blender", "CSDK 12", "Source2Viewer", "UV Unwrapping"],
+		thumbnail: "assets/images/deadlockCover.png",
 		brief: "Modding Done: Custom Models and Colour Palette Swaps.",
 		personalFavourite: false,
 		inDevelopment: false,
-		screenshots: [],
+		screenshots: ["assets/images/deadlockScreenshots/ss1.png", "assets/images/deadlockScreenshots/ss2.png", "assets/images/deadlockScreenshots/ss3.png", "assets/images/deadlockScreenshots/ss4.png", "assets/images/deadlockScreenshots/ss5.png"],
 		links: [],
 		description: "Placeholder."
 	},
