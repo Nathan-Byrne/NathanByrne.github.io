@@ -13,15 +13,15 @@ const projects = [
 		description: "Programming a project that is planned to be released on Steam in the future. The game's premise is a 4 player, 2.5D board game where each player moves and battles each other for control of the board, obtain items, collect money to eventually win the entire game. Players can create custom tailored builds using items in order to adapt to the ever increasing need to survive against their opponents."
 	},
 	{
-		name: "GMTK Submission",
+		name: "Dead-Line",
 		tags: ["GMTK Game Jam 2026", "GDScript", "Godot", "Playtester", "Itch.io", "Team Project"],
-		thumbnail: "assets/images/gmtkCover.png",
-		brief: "A Future Planned Project for the GMTK Game Jam 2026",
+		thumbnail: "assets/images/deadLine.png",
+		brief: "A Detective Game where the Player must Scan Cameras to pin down the Criminal in the area while under a Ticking Timer",
 		personalFavourite: false,
-		inDevelopment: true,
+		inDevelopment: false,
 		screenshots: [],
-		links: [],
-		description: "Description, screenshots and links for this project will be updated when the project has been relesed to the public."
+		links: [{label: "Itch.io Page", url: "https://jbatiger.itch.io/dead-line"}],
+		description: "I participated in playtesting before the game launched and provided itch knowledge to the other team members on how to make a game stand out on itch. I also handled designing the Itch game page."
 	},
 	{
 		name: "Personal Website",
@@ -96,20 +96,20 @@ const projects = [
 const mods = [
 	{
 		name: "Deadlock",
-		tags: ["Independent Learning", "Blender", "CSDK 12", "Source2Viewer", "UV Unwrapping"],
+		tags: ["Independent Learning", "Blender", "Aseprite", "CSDK 12", "Source2Viewer", "UV Unwrapping"],
 		thumbnail: "assets/images/deadlockCover.png",
-		brief: "Modding Done: Custom Models and Colour Palette Swaps.",
+		brief: "Developer: Valve\nModding Done: Custom Models, Colour Palette Swaps and Image Replacement.",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: ["assets/images/deadlockScreenshots/ss1.png", "assets/images/deadlockScreenshots/ss2.png", "assets/images/deadlockScreenshots/ss3.png", "assets/images/deadlockScreenshots/ss4.png", "assets/images/deadlockScreenshots/ss5.png"],
-		links: [],
-		description: "Placeholder."
+		links: [{label: "Deadlock Modding Notes", url: "https://deadlockmodding.pages.dev/"}],
+		description: "Modded the game Deadlock with multiple mods that can range from model updates / changes, skin colour swaps by updating their textures and complete texture replacements on models, UI or other elements."
 	},
 	{
 		name: "UNBEATABLE",
-		tags: ["Independent Learning"],
-		thumbnail: "assets/images/placeholder.png",
-		brief: "Modding Done: Custom Charts (using Dev Editor).",
+		tags: ["Independent Learning", "Dev Editor", "Steam Workshop"],
+		thumbnail: "assets/images/unbeatableCover.png",
+		brief: "Developer: D-CELL\nModding Done: Custom Charts (using Dev Editor).",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
@@ -118,9 +118,9 @@ const mods = [
 	},
 	{
 		name: "Rift of the Necrodancer",
-		tags: ["Independent Learning"],
-		thumbnail: "assets/images/placeholder.png",
-		brief: "Modding Done: Custom Charts (using Dev Editor).",
+		tags: ["Independent Learning", "Dev Editor", "Steam Workshop"],
+		thumbnail: "assets/images/necrodancerCover.png",
+		brief: "Developer: Brace Yourself Games\nModding Done: Custom Charts (using Dev Editor).",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
@@ -129,9 +129,9 @@ const mods = [
 	},
 	{
 		name: "Guilty Gear -Strive-",
-		tags: ["Independent Learning"],
-		thumbnail: "assets/images/placeholder.png",
-		brief: "Modding Done: Colour Palette Swaps.",
+		tags: ["Independent Learning", "Blender", "Unreal Engine 4"],
+		thumbnail: "assets/images/striveCover.png",
+		brief: "Developer: Arc System Works\nModding Done: Colour Palette Swaps.",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
