@@ -1,4 +1,4 @@
-// Additional Features to Include: Fix Mobile Display, Easter Egg (???), Shooting Stars get Stuck on Sidebar, Non-Coloured Tags for Modding
+// Additional Features to Include: Fix Mobile Display, Easter Egg (???)
 
 const projects = [
 	{
@@ -19,7 +19,7 @@ const projects = [
 		brief: "A Detective Game where the Player must Scan Cameras to pin down the Criminal in the area while under a Ticking Timer",
 		personalFavourite: false,
 		inDevelopment: false,
-		screenshots: [],
+		screenshots: ["assets/images/deadLineScreenshots/ss1.png", "assets/images/deadLineScreenshots/ss2.png", "assets/images/deadLineScreenshots/ss3.png", "assets/images/deadLineScreenshots/ss4.png"],
 		links: [{label: "Itch.io Page", url: "https://jbatiger.itch.io/dead-line"}],
 		description: "I participated in playtesting before the game launched and provided itch knowledge to the other team members on how to make a game stand out on itch. I also handled designing the Itch game page."
 	},
@@ -164,7 +164,7 @@ function buildTagColorMap(list) {
 	return map;
 }
 
-const tagColorMap = buildTagColorMap(projects);
+const tagColorMap = buildTagColorMap([...projects, ...mods]);
 
 function tagClass(tag, isFirst) {
 	if (isFirst) return "tag-reason";
