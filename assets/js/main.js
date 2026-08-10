@@ -1,4 +1,4 @@
-// Additional Features to Include: Fix Mobile Display, Easter Egg (???), Shooting Stars get Stuck on Sidebar
+// Additional Features to Include: Fix Mobile Display, Easter Egg (???), Shooting Stars get Stuck on Sidebar, Non-Coloured Tags for Modding
 
 const projects = [
 	{
@@ -96,47 +96,48 @@ const projects = [
 const mods = [
 	{
 		name: "Deadlock",
-		tags: ["Independent Learning", "Blender", "Aseprite", "CSDK 12", "Source2Viewer", "UV Unwrapping"],
+		tags: ["Independent Learning", "Blender", "Aseprite", "Krita", "CSDK 12", "Source2Viewer", "UV Unwrapping"],
 		thumbnail: "assets/images/deadlockCover.png",
-		brief: "Developer: Valve\nModding Done: Custom Models, Colour Palette Swaps and Image Replacement.",
+		brief: "Developer: Valve. Modding Done: Custom Models, Colour Palette Swaps and Image Replacement.",
 		personalFavourite: false,
 		inDevelopment: false,
-		screenshots: ["assets/images/deadlockScreenshots/ss1.png", "assets/images/deadlockScreenshots/ss2.png", "assets/images/deadlockScreenshots/ss3.png", "assets/images/deadlockScreenshots/ss4.png", "assets/images/deadlockScreenshots/ss5.png"],
+		screenshots: ["assets/images/deadlockScreenshots/ss1.png", "assets/images/deadlockScreenshots/ss2.png", "assets/images/deadlockScreenshots/ss3.png", "assets/images/deadlockScreenshots/ss4.png", "assets/images/deadlockScreenshots/ss5.png", 
+			"assets/images/deadlockScreenshots/ss6.png", "assets/images/deadlockScreenshots/ss7.png", "assets/images/deadlockScreenshots/ss8.png", "assets/images/deadlockScreenshots/ss9.png", "assets/images/deadlockScreenshots/ss10.png"],
 		links: [{label: "Deadlock Modding Notes", url: "https://deadlockmodding.pages.dev/"}],
 		description: "Modded the game Deadlock with multiple mods that can range from model updates / changes, skin colour swaps by updating their textures and complete texture replacements on models, UI or other elements."
 	},
 	{
 		name: "UNBEATABLE",
-		tags: ["Independent Learning", "Dev Editor", "Steam Workshop"],
+		tags: ["Independent Learning", "Dev Editor"],
 		thumbnail: "assets/images/unbeatableCover.png",
-		brief: "Developer: D-CELL\nModding Done: Custom Charts (using Dev Editor).",
+		brief: "Developer: D-CELL. Modding Done: Custom Charts (using Dev Editor).",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
 		links: [],
-		description: "Placeholder."
+		description: "Created modded music tracks for the game UNBEATABLE."
 	},
 	{
 		name: "Rift of the Necrodancer",
-		tags: ["Independent Learning", "Dev Editor", "Steam Workshop"],
+		tags: ["Independent Learning", "Dev Editor"],
 		thumbnail: "assets/images/necrodancerCover.png",
-		brief: "Developer: Brace Yourself Games\nModding Done: Custom Charts (using Dev Editor).",
+		brief: "Developer: Brace Yourself Games. Modding Done: Custom Charts (using Dev Editor).",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
 		links: [],
-		description: "Placeholder."
+		description: "Created modded music tracks for the game Rift of the Necrodancer."
 	},
 	{
 		name: "Guilty Gear -Strive-",
 		tags: ["Independent Learning", "Blender", "Unreal Engine 4"],
 		thumbnail: "assets/images/striveCover.png",
-		brief: "Developer: Arc System Works\nModding Done: Colour Palette Swaps.",
+		brief: "Developer: Arc System Works. Modding Done: Colour Palette Swaps.",
 		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
 		links: [],
-		description: "Placeholder."
+		description: "Created custom skin for characters for the game Guilty Gear -Strive-."
 	}
 ];
 
