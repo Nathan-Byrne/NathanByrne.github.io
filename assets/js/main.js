@@ -21,7 +21,7 @@ const projects = [
 		inDevelopment: false,
 		screenshots: ["assets/images/deadLineScreenshots/ss1.png", "assets/images/deadLineScreenshots/ss2.png", "assets/images/deadLineScreenshots/ss3.png", "assets/images/deadLineScreenshots/ss4.png"],
 		links: [{label: "Itch.io Page", url: "https://jbatiger.itch.io/dead-line"}],
-		description: "I participated in playtesting before the game launched and provided itch knowledge to the other team members on how to make a game stand out on itch. I also handled designing the Itch game page."
+		description: "I participated in playtesting before the game launched and provided last minute coding support and itch knowledge to the other team members on how to make a game stand out on itch. I also handled designing the Itch game page."
 	},
 	{
 		name: "Personal Website",
