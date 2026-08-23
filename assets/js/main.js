@@ -577,6 +577,7 @@ const tabContentMap = {
 };
 
 const aboutPanel = document.getElementById("about-panel");
+const gridHint = document.getElementById("grid-hint");
 
 pageTabs.forEach(tab => {
 	tab.addEventListener("click", () => {
@@ -590,11 +591,27 @@ pageTabs.forEach(tab => {
 		if (target === "about") {
 			aboutPanel.hidden = false;
 			grid.hidden = true;
+			gridHint.hidden = true;
 		} else {
 			aboutPanel.hidden = true;
 			grid.hidden = false;
+			gridHint.hidden = false;
 			const { list, badgeSuffix } = tabContentMap[target];
 			renderCards(list, badgeSuffix);
 		}
 	});
+});
+
+// ---------------------------------------------------------
+// Scroll-to-top button — appears after scrolling down a bit,
+// smooth-scrolls back to the top on click.
+// ---------------------------------------------------------
+const scrollTopBtn = document.getElementById("scroll-top-btn");
+
+window.addEventListener("scroll", () => {
+	scrollTopBtn.classList.toggle("visible", window.scrollY > 400);
+});
+
+scrollTopBtn.addEventListener("click", () => {
+	window.scrollTo({ top: 0, behavior: "smooth" });
 });

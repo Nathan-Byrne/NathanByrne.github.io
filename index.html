@@ -4,7 +4,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>NB's Website</title>
+	<meta name="description" content="Nathan Byrne — SETU Carlow games development graduate. A collection of games, jams, and mods.">
 	<link rel="icon" type="image/png" href="assets/images/icon.ico">
+
+	<!-- Open Graph — controls how this page previews when shared on Discord, LinkedIn, etc. -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Nathan Byrne — Projects">
+	<meta property="og:description" content="A collection of games, jams, and mods, built by Nathan Byrne.">
+	<meta property="og:image" content="assets/images/metaPreview.png">
+	<meta property="og:url" content="https://your-username.github.io">
+
+	<!-- Twitter/X card — falls back to the Open Graph tags above, but Twitter reads these explicitly -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Nathan Byrne — Projects">
+	<meta name="twitter:description" content="A collection of games, jams, and mods, built by Nathan Byrne.">
+	<meta name="twitter:image" content="assets/images/metaPreview.png">
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +61,10 @@
 		<span id="mode-toggle-label">Simple mode</span>
 	</button>
 
+	<button class="scroll-top-btn" id="scroll-top-btn" type="button" aria-label="Scroll to top">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+	</button>
+
 	<header class="site-header">
 		<div class="header-inner">
 			<div class="header-top">
@@ -64,6 +82,8 @@
 		<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="projects">Projects</button>
 		<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="modding">Modding for Games</button>
 	</nav>
+
+	<p class="grid-hint" id="grid-hint" hidden>Click a project to view more details</p>
 
 	<section class="about-panel" id="about-panel" role="tabpanel">
 		<div class="about-card">
