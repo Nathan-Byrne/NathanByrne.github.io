@@ -614,6 +614,10 @@ body.simple-mode .mode-toggle .dot {
 	margin: 1.25rem auto 0;
 }
 
+.grid-hint[hidden] {
+	display: none;
+}
+
 .project-grid {
 	max-width: 1100px;
 	margin: 0 auto;
