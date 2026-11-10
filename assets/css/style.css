@@ -1279,3 +1279,17 @@ body.devlog-open { overflow: hidden; }
 .devlog-filter-chip { cursor: pointer; font-family: var(--font-mono); background: none; transition: opacity 0.15s ease, filter 0.15s ease; }
 .devlog-filter-chip:hover, .devlog-filter-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .devlog-filter-chip.is-off { opacity: 0.4; filter: grayscale(0.7); text-decoration: line-through; }
+
+/* Cover image at the top of a devlog card (Devlogs tab only) */
+.devlog-card-cover {
+	display: block;
+	width: calc(100% + 3rem);
+	margin: -1.35rem -1.5rem 1rem;
+	height: clamp(140px, 24vw, 220px);
+	object-fit: cover;
+	border-radius: 13px 13px 0 0;
+}
+@media (max-width: 600px) {
+	.devlog-card-cover { width: calc(100% + 2.2rem); margin: -1.1rem -1.1rem 0.9rem; }
+}
+.devlog-card { overflow: hidden; }

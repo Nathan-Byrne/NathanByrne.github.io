@@ -668,6 +668,8 @@ const aboutPanel = document.getElementById("about-panel");
 const postsPanel = document.getElementById("devlogs-panel");
 const postsList = document.getElementById("devlogs-list");
 const gridHint = document.getElementById("grid-hint");
+const PROJECTS_HINT = "Click or Hover over a Box to View More";
+const DEVLOGS_HINT = "Click a Box to View a Devlog";
 
 pageTabs.forEach(tab => {
 	tab.addEventListener("click", () => {
@@ -681,7 +683,8 @@ pageTabs.forEach(tab => {
 		aboutPanel.hidden = target !== "about";
 		postsPanel.hidden = target !== "devlogs";
 		grid.hidden = target === "about" || target === "devlogs";
-		gridHint.hidden = target === "about" || target === "devlogs";
+		gridHint.hidden = target === "about";
+		gridHint.textContent = target === "devlogs" ? DEVLOGS_HINT : PROJECTS_HINT;
 
 		if (target === "devlogs") {
 			loadPosts();
@@ -818,6 +821,16 @@ function loadPosts() {
 			const excerpt = document.createElement("p");
 			excerpt.className = "devlog-excerpt";
 			excerpt.textContent = devlog.excerpt || "";
+			if (devlog.cover) {
+				// Cover image on the Devlogs tab only (not on the project/mod bubbles).
+				const cover = document.createElement("img");
+				cover.className = "devlog-card-cover";
+				cover.src = devlog.cover;
+				cover.alt = "";
+				cover.loading = "lazy";
+				cover.addEventListener("error", () => cover.remove()); // missing image: just skip it
+				link.append(cover);
+			}
 			link.append(meta, title, excerpt);
 			postsList.appendChild(link);
 		});
