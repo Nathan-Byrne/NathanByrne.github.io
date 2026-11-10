@@ -69,6 +69,18 @@ body {
 	font-family: var(--font-body);
 	line-height: 1.5;
 	position: relative;
+	/* Always at least one screen tall, laid out as a column: the page content on top and
+	   the footer below it. See .site-footer for why. */
+	min-height: 100vh;
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Wraps the header, tabs and every tab panel (everything above the footer). It is its own
+   block so those sections keep their normal width/auto-margin centring. */
+.page-content {
+	flex: 0 0 auto;
 }
 
 /* ---------------------------------------------------------
@@ -1051,6 +1063,10 @@ body.simple-mode .mode-toggle .dot {
 }
 
 .site-footer {
+	/* On short pages (About Me, a single devlog) the footer grows to fill the rest of the
+	   screen, so its dark shade runs all the way to the bottom instead of stopping
+	   part-way down. On long pages there is no spare height, so nothing changes. */
+	flex: 1 0 auto;
 	text-align: center;
 	padding: 2rem 1.5rem 4.5rem;
 	color: var(--text-muted);
@@ -1112,3 +1128,154 @@ button:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
 }
+
+
+/* ---------------------------------------------------------
+   Updates / devlogs
+--------------------------------------------------------- */
+.devlogs-panel {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 2.5rem 1.5rem 5rem;
+}
+.devlogs-panel[hidden] { display: none; }
+.devlogs-list { display: grid; gap: 1rem; }
+.devlog-card {
+	display: block;
+	padding: 1.35rem 1.5rem;
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	background: var(--surface);
+	backdrop-filter: blur(18px) saturate(150%);
+	-webkit-backdrop-filter: blur(18px) saturate(150%);
+	color: var(--text);
+	text-decoration: none;
+	transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+.devlog-card:hover, .devlog-card:focus-visible {
+	transform: translateY(-3px);
+	border-color: var(--accent);
+	background: var(--surface-raised);
+	outline: none;
+}
+.devlog-date {
+	color: var(--accent);
+	font: 0.75rem var(--font-mono);
+	letter-spacing: 0.04em;
+}
+.devlog-title { font: 600 1.25rem var(--font-display); margin: 0.45rem 0; }
+.devlog-excerpt { color: var(--text-muted); margin: 0; line-height: 1.65; }
+.devlogs-empty { color: var(--text-muted); text-align: center; padding: 2rem; }
+@media (max-width: 600px) {
+	.devlogs-panel { padding: 2rem 1rem 4rem; }
+	.devlog-card { padding: 1.1rem; }
+}
+
+/* Devlog metadata, article reader and Markdown content */
+.devlog-card { width: 100%; text-align: left; cursor: pointer; font: inherit; }
+.devlog-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+/* Full-screen reader: covers the whole viewport, scrolls on its own, and picks up the
+   current theme colour through the same nebula variables as the background. */
+.devlog-reader {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	background:
+		radial-gradient(ellipse at 15% 0%, var(--nebula-purple), transparent 55%),
+		radial-gradient(ellipse at 90% 100%, var(--nebula-pink), transparent 50%),
+		var(--bg);
+}
+.devlog-reader[hidden] { display: none; }
+body.devlog-open { overflow: hidden; }
+.devlog-topbar {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	padding: 1rem 1.5rem;
+	background: linear-gradient(to bottom, var(--bg) 40%, transparent);
+}
+.devlog-back { border: 1px solid var(--border); border-radius: 9px; background: var(--surface-raised); color: var(--text); padding: .65rem 1rem; cursor: pointer; font: inherit; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.devlog-back:hover, .devlog-back:focus-visible { border-color: var(--accent); outline: none; }
+.devlog-article { max-width: 860px; margin: 0 auto; padding: 1rem 1.5rem 6rem; }
+.devlog-article-header { margin-bottom: 2rem; }
+.devlog-article-header h1 { font: 700 clamp(1.8rem, 5vw, 2.7rem) var(--font-display); margin: .6rem 0 1.25rem; }
+.devlog-cover { display: block; width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; }
+.devlog-content { line-height: 1.8; overflow-wrap: anywhere; 
+	white-space: pre-wrap;}
+.devlog-content h1, .devlog-content h2, .devlog-content h3 { font-family: var(--font-display); line-height: 1.25; margin: 2rem 0 .8rem; }
+.devlog-content p, .devlog-content ul, .devlog-content ol { color: var(--text-muted); }
+.devlog-content a { color: var(--accent); }
+.devlog-content img { max-width: 100%; height: auto; border-radius: 10px; }
+.devlog-content pre { overflow-x: auto; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,.25); }
+.devlog-content code { font-family: var(--font-mono); }
+.devlog-content blockquote { border-left: 3px solid var(--accent); margin-left: 0; padding-left: 1rem; color: var(--text-muted); }
+
+
+/* Devlog bubble on project/mod cards (inside the hover panel) */
+.devlog-bubble {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	width: 100%;
+	margin: 0 0 0.5rem;
+	padding: 0.7rem 0.85rem;
+	text-align: left;
+	font: inherit;
+	color: var(--text);
+	cursor: pointer;
+	border: 1px solid var(--accent);
+	border-radius: 12px;
+	background: rgba(185, 142, 230, 0.12);
+	transition: background 0.15s ease, transform 0.15s ease;
+}
+.devlog-bubble:hover, .devlog-bubble:focus-visible {
+	background: rgba(185, 142, 230, 0.24);
+	transform: translateY(-1px);
+	outline: none;
+}
+.devlog-bubble-label { font: 0.68rem var(--font-mono); color: var(--accent); letter-spacing: 0.04em; }
+.devlog-bubble-title { font: 600 0.88rem var(--font-display); }
+.devlog-bubble-snippet {
+	font-size: 0.8rem;
+	line-height: 1.45;
+	color: var(--text-muted);
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.devlog-bubble-cta { font: 0.72rem var(--font-mono); color: var(--accent); margin-top: 0.15rem; }
+.project-card.is-favourite .devlog-bubble { border-color: var(--favourite); background: rgba(242, 99, 125, 0.1); }
+.project-card.is-favourite .devlog-bubble:hover { background: rgba(242, 99, 125, 0.2); }
+.project-card.is-favourite .devlog-bubble-label,
+.project-card.is-favourite .devlog-bubble-cta { color: var(--favourite); }
+
+.devlog-section { margin: 0.2rem 0 0.9rem; }
+.devlog-section-title {
+	font: 600 0.8rem var(--font-mono);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	margin: 0 0 0.5rem;
+}
+
+/* Devlogs tab: project filter */
+.devlog-card[hidden], .devlogs-empty[hidden], .devlogs-filter[hidden] { display: none; }
+.devlogs-filter {
+	display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem;
+	margin-bottom: 1.25rem;
+	padding: 0.85rem 1.1rem;
+	background: rgba(14, 9, 24, 0.62);
+	border: 1px solid var(--border);
+	border-radius: 14px;
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+.devlogs-filter-label { font: 0.75rem var(--font-mono); color: var(--text-muted); letter-spacing: 0.04em; }
+.devlogs-filter-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.devlog-filter-chip { cursor: pointer; font-family: var(--font-mono); background: none; transition: opacity 0.15s ease, filter 0.15s ease; }
+.devlog-filter-chip:hover, .devlog-filter-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.devlog-filter-chip.is-off { opacity: 0.4; filter: grayscale(0.7); text-decoration: line-through; }

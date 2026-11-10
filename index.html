@@ -65,76 +65,87 @@
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
 	</button>
 
-	<header class="site-header">
-		<div class="header-inner">
-			<div class="header-top">
-				<img class="pfp" src="assets/images/face.png" alt="Profile picture">
-				<div class="header-text">
-					<h1 class="site-title">Nathan Byrne</h1>
-					<p class="site-tagline">A list of projects that I have created / contributed to.</p>
+	<div class="page-content">
+		<header class="site-header">
+			<div class="header-inner">
+				<div class="header-top">
+					<img class="pfp" src="assets/images/face.png" alt="Profile picture">
+					<div class="header-text">
+						<h1 class="site-title">Nathan Byrne</h1>
+						<p class="site-tagline">A list of projects that I have created / contributed to.</p>
+					</div>
 				</div>
 			</div>
-		</div>
-	</header>
+		</header>
 
-	<nav class="page-tabs" role="tablist" aria-label="Page sections">
-		<button class="page-tab active" type="button" role="tab" aria-selected="true" data-tab="about">About Me</button>
-		<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="projects">Projects</button>
-		<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="modding">Modding for Games</button>
-	</nav>
+		<nav class="page-tabs" role="tablist" aria-label="Page sections">
+			<button class="page-tab active" type="button" role="tab" aria-selected="true" data-tab="about">About Me</button>
+			<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="projects">Projects</button>
+			<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="devlogs">Devlogs</button>
+			<button class="page-tab" type="button" role="tab" aria-selected="false" data-tab="modding">Modding for Games</button>
+		</nav>
 
-	<p class="grid-hint" id="grid-hint" hidden>Click or Hover over a Box to View More</p>
+		<p class="grid-hint" id="grid-hint" hidden>Click or Hover over a Box to View More</p>
 
-	<section class="about-panel" id="about-panel" role="tabpanel">
-		<div class="about-card">
-			<h2 class="about-title">About Me</h2>
-			<p class="about-text">
-				My name is Nathan Byrne, a graduate from SETU Carlow with a BSc (Hons) for Computer Games Development. You can find my CV's below if you wish to read more about my skills and experiences.
-			</p>
-			<p class="about-text">
-				I have used Unity, Godot and Unreal as my main go-to game engines for creating games and have also used other non-engines like SFML for C++ games. I also have experience in cloud development from pratice using AWS, Azure and DigitalOcean for my projects.
-			</p>
-			<p class="about-text">
-				Languages I work with include:
-			</p>
-			<ul class="about-list">
-				<li>C++ (Primary)</li>
-				<li>C# (Primary)</li>
-				<li>Python (Primary)</li>
-				<li>JavaScript</li>
-				<li>SQL</li>
-				<li>HTML</li>
-				<li>CSS</li>
-				<li>GDScript</li>
-			</ul>
+		<section class="about-panel" id="about-panel" role="tabpanel">
+			<div class="about-card">
+				<h2 class="about-title">About Me</h2>
+				<p class="about-text">
+					My name is Nathan Byrne, a graduate from SETU Carlow with a BSc (Hons) for Computer Games Development. You can find my CV's below if you wish to read more about my skills and experiences.
+				</p>
+				<p class="about-text">
+					I have used Unity, Godot and Unreal as my main go-to game engines for creating games and have also used other non-engines like SFML for C++ games. I also have experience in cloud development from pratice using AWS, Azure and DigitalOcean for my projects.
+				</p>
+				<p class="about-text">
+					Languages I work with include:
+				</p>
+				<ul class="about-list">
+					<li>C++ (Primary)</li>
+					<li>C# (Primary)</li>
+					<li>Python (Primary)</li>
+					<li>JavaScript</li>
+					<li>SQL</li>
+					<li>HTML</li>
+					<li>CSS</li>
+					<li>GDScript</li>
+				</ul>
 
-			<h3 class="about-subtitle">CV's</h3>
-			<div class="cv-downloads">
-				<div class="cv-download">
-					<a
-						class="cv-button"
-						href="assets/cv/game/NathanByrneCV.pdf"
-						download
-					>
-						Download CV (Game Version)
-					</a>
-					<p class="cv-caption">A CV focusing on more game development skills that I have learned.</p>
-				</div>
-				<div class="cv-download">
-					<a
-						class="cv-button"
-						href="assets/cv/nonGame/NathanByrneCV.pdf"
-						download
-					>
-						Download CV (Non-Game Version)
-					</a>
-					<p class="cv-caption">A general purpose CV covering my full skillset and background with less focus on game development.</p>
+				<h3 class="about-subtitle">CV's</h3>
+				<div class="cv-downloads">
+					<div class="cv-download">
+						<a
+							class="cv-button"
+							href="assets/cv/game/NathanByrneCV.pdf"
+							download
+						>
+							Download CV (Game Version)
+						</a>
+						<p class="cv-caption">A CV focusing on more game development skills that I have learned.</p>
+					</div>
+					<div class="cv-download">
+						<a
+							class="cv-button"
+							href="assets/cv/nonGame/NathanByrneCV.pdf"
+							download
+						>
+							Download CV (Non-Game Version)
+						</a>
+						<p class="cv-caption">A general purpose CV covering my full skillset and background with less focus on game development.</p>
+					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
-	<main class="project-grid" id="project-grid" role="tabpanel" aria-live="polite" hidden></main>
+		<main class="project-grid" id="project-grid" role="tabpanel" aria-live="polite" hidden></main>
+		<section class="devlogs-panel" id="devlogs-panel" role="tabpanel" aria-live="polite" hidden>
+			<div class="devlogs-filter" id="devlogs-filter" hidden>
+				<span class="devlogs-filter-label">Filter by project</span>
+				<div class="devlogs-filter-chips" id="devlogs-filter-chips"></div>
+			</div>
+			<div class="devlogs-list" id="devlogs-list"></div>
+			<p class="devlogs-empty" id="devlogs-no-match" hidden>No devlogs shown. Select a project above to show its devlogs.</p>
+		</section>
+	</div>
 
 	<footer class="site-footer">
 		<div class="social-links">
@@ -152,6 +163,10 @@
 		<p>Hosted on GitHub Pages.</p>
 	</footer>
 
+	<!-- Full-screen devlog reader (opened from the Devlogs tab or a project/mod card bubble) -->
+	<div class="devlog-reader" id="devlog-reader" role="dialog" aria-modal="true" aria-label="Devlog" hidden></div>
+
+	<script src="assets/js/devlogs.js"></script>
 	<script src="assets/js/main.js"></script>
 </body>
 </html>

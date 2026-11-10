@@ -28,11 +28,11 @@ const projects = [
 		tags: ["Independent Learning", "HTML", "CSS", "JavaScript", "Claude", "GitHub Pages", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/websiteCover.png",
 		brief: "My Website, which Included Details About my Projects",
-		personalFavourite: true,
+		personalFavourite: false,
 		inDevelopment: false,
 		screenshots: [],
 		links: [{label: "Project Repo", url: "https://github.com/Nathan-Byrne/NathanByrne.github.io"}],
-		description: "A personal website created to store a record of all my contributed projects in one space. The initial steps to create this page was helped by using Claude, and further development consisted of tweeks and improvments after file generation."
+		description: "A personal website created to store a record of all my contributed projects and information about them in one space. The initial steps to create this page was helped by using Claude, and further development consisted of tweeks and improvments after file generation. This project stands as an example of prompt engineering and is the only project here that uses a LLM for coding."
 	},
 	{
 		name: "FACE//WATCH",
@@ -149,22 +149,36 @@ const tagPalette = [
 	"tag-p8", "tag-p9", "tag-p10", "tag-p11", "tag-p12", "tag-p13", "tag-p14", "tag-p15",
 ];
 
-function buildTagColorMap(list) {
+// A devlog's tags, as a clean list (ignores a missing or malformed "tags" field).
+function devlogTags(devlog) {
+	return Array.isArray(devlog.tags)
+		? devlog.tags.filter(tag => typeof tag === "string" && tag.trim() !== "")
+		: [];
+}
+
+function buildTagColorMap(list, devlogList = []) {
 	const map = new Map();
 	let nextIndex = 0;
+	const assign = tag => {
+		if (!map.has(tag)) {
+			map.set(tag, tagPalette[nextIndex % tagPalette.length]);
+			nextIndex++;
+		}
+	};
 	list.forEach(project => {
 		project.tags.forEach((tag, t) => {
 			if (t === 0) return; // first tag is the "reason" (colored separately)
-			if (!map.has(tag)) {
-				map.set(tag, tagPalette[nextIndex % tagPalette.length]);
-				nextIndex++;
-			}
+			assign(tag);
 		});
 	});
+	// Devlog tags are added last, so they never change an existing project/mod tag's colour,
+	// and a tag shared with a project keeps that project's colour. Unlike projects, every
+	// devlog tag gets a colour from the map (there is no special first "reason" tag).
+	devlogList.forEach(devlog => devlogTags(devlog).forEach(assign));
 	return map;
 }
 
-const tagColorMap = buildTagColorMap([...projects, ...mods]);
+const tagColorMap = buildTagColorMap([...projects, ...mods], devlogs);
 
 function tagClass(tag, isFirst) {
 	if (isFirst) return "tag-reason";
@@ -176,6 +190,68 @@ function ordinal(n) {
 	const remainder = n % 100;
 	const suffix = suffixes[(remainder - 20) % 10] || suffixes[remainder] || suffixes[0];
 	return `${n}${suffix}`;
+}
+
+// Devlogs that belong to a project/mod: those whose "project" field matches its name
+// (case-insensitive). Newest first.
+function devlogsForName(name) {
+	const wanted = String(name || "").trim().toLowerCase();
+	if (!wanted) return [];
+	return devlogs
+		.filter(devlog => String(devlog.project || "").trim().toLowerCase() === wanted)
+		.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+}
+
+// Short plain-text preview of a devlog: its excerpt, or the start of its content.
+function devlogSnippet(devlog, maxLength = 120) {
+	const text = String(devlog.excerpt || devlog.content || "").replace(/\s+/g, " ").trim();
+	return text.length > maxLength ? `${text.slice(0, maxLength).trimEnd()}…` : text;
+}
+
+// One speech-bubble previewing a devlog. Clicking it opens that devlog full screen.
+function makeDevlogBubble(devlog) {
+	const bubble = document.createElement("button");
+	bubble.type = "button";
+	bubble.className = "devlog-bubble";
+	bubble.setAttribute("aria-label", `Read devlog: ${devlog.title || "Untitled devlog"}`);
+
+	const label = document.createElement("span");
+	label.className = "devlog-bubble-label";
+	label.textContent = formatDevlogDate(devlog.date);
+
+	const title = document.createElement("span");
+	title.className = "devlog-bubble-title";
+	title.textContent = devlog.title || "Untitled devlog";
+
+	const snippet = document.createElement("span");
+	snippet.className = "devlog-bubble-snippet";
+	snippet.textContent = devlogSnippet(devlog);
+
+	const cta = document.createElement("span");
+	cta.className = "devlog-bubble-cta";
+	cta.textContent = "Read devlog →";
+
+	bubble.append(label, title, snippet, cta);
+	bubble.addEventListener("click", () => {
+		document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
+		openDevlog(devlog);
+	});
+	return bubble;
+}
+
+// "Devlogs" title followed by one bubble per matching devlog (newest first).
+// Returns null if the project/mod has no devlogs.
+function makeDevlogSection(project) {
+	const matches = devlogsForName(project.name);
+	if (!matches.length) return null;
+	const section = document.createElement("div");
+	section.className = "devlog-section";
+	const heading = document.createElement("h4");
+	heading.className = "devlog-section-title";
+	heading.textContent = "Devlogs";
+	section.appendChild(heading);
+	matches.forEach(devlog => section.appendChild(makeDevlogBubble(devlog)));
+	return section;
 }
 
 function renderCards(list, badgeSuffix = "Project") {
@@ -230,6 +306,12 @@ function renderCards(list, badgeSuffix = "Project") {
 			</div>
 		`;
 
+		const devlogSection = makeDevlogSection(project);
+		if (devlogSection) {
+			const panel = card.querySelector(".card-hover-panel");
+			panel.insertBefore(devlogSection, panel.querySelector(".hover-links, .hover-empty-note"));
+		}
+
 		grid.appendChild(card);
 
 		if (screenshots.length > 1) {
@@ -271,7 +353,7 @@ renderCards(projects);
 // Touch/tap fallback: :hover doesn't exist on touch devices, so tapping a
 // card toggles its panel open. Tapping elsewhere (or another card) closes it.
 grid.addEventListener("click", (e) => {
-	if (e.target.closest(".hover-link, .hover-screenshots")) return; // let real links + screenshot clicks work without toggling the card
+	if (e.target.closest(".hover-link, .hover-screenshots, .devlog-bubble")) return; // let real links + screenshot clicks work without toggling the card
 	const card = e.target.closest(".project-card");
 	if (!card) return;
 	const wasOpen = card.classList.contains("is-open");
@@ -286,6 +368,12 @@ document.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
+	// While a devlog is open full screen, Escape closes it and nothing else reacts.
+	if (!devlogReader.hidden) {
+		if (e.key === "Escape") closeDevlog();
+		return;
+	}
+
 	if (e.key === "Escape") {
 		document.querySelectorAll(".project-card.is-open").forEach(c => c.classList.remove("is-open"));
 	}
@@ -577,6 +665,8 @@ const tabContentMap = {
 };
 
 const aboutPanel = document.getElementById("about-panel");
+const postsPanel = document.getElementById("devlogs-panel");
+const postsList = document.getElementById("devlogs-list");
 const gridHint = document.getElementById("grid-hint");
 
 pageTabs.forEach(tab => {
@@ -588,19 +678,218 @@ pageTabs.forEach(tab => {
 			t.setAttribute("aria-selected", String(t === tab));
 		});
 
-		if (target === "about") {
-			aboutPanel.hidden = false;
-			grid.hidden = true;
-			gridHint.hidden = true;
-		} else {
-			aboutPanel.hidden = true;
-			grid.hidden = false;
-			gridHint.hidden = false;
+		aboutPanel.hidden = target !== "about";
+		postsPanel.hidden = target !== "devlogs";
+		grid.hidden = target === "about" || target === "devlogs";
+		gridHint.hidden = target === "about" || target === "devlogs";
+
+		if (target === "devlogs") {
+			loadPosts();
+		} else if (target !== "about") {
 			const { list, badgeSuffix } = tabContentMap[target];
 			renderCards(list, badgeSuffix);
 		}
 	});
 });
+
+// ---------------------------------------------------------
+// Devlogs tab: lists the devlogs array from devlogs.js and
+// opens one in a reader view when it is clicked.
+// ---------------------------------------------------------
+let devlogsLoaded = false;
+const devlogReader = document.getElementById("devlog-reader");
+
+function formatDevlogDate(dateString) {
+	const date = new Date(`${dateString}T00:00:00`);
+	if (Number.isNaN(date.getTime())) return dateString || "";
+	return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+}
+
+// One tag chip: same .tag markup and colour classes as the project/mod cards.
+// The devlog's "project" is shown as the first chip, in the same amber "first tag" colour
+// as the project/mod cards.
+function makeTagChip(tag, isProject = false) {
+	const chip = document.createElement("span");
+	chip.className = `tag ${tagClass(tag, isProject)}`;
+	chip.textContent = tag;
+	return chip;
+}
+
+// Project filter at the top of the Devlogs tab: one chip per distinct "project" value.
+// Clicking a chip hides/shows the devlogs for that project. Devlogs with no project
+// belong to "Miscellaneous", which gets its own chip (always last).
+// A devlog with no "project" is shown as "Miscellaneous" (and filtered like any other project).
+const NO_PROJECT_LABEL = "Miscellaneous";
+function devlogProjectLabel(devlog) {
+	return String(devlog.project || "").trim() || NO_PROJECT_LABEL;
+}
+
+function projectKey(project) {
+	return String(project || "").trim().toLowerCase();
+}
+
+function setupDevlogFilter(sortedDevlogs, cards) {
+	const bar = document.getElementById("devlogs-filter");
+	const chipsBox = document.getElementById("devlogs-filter-chips");
+	const noMatch = document.getElementById("devlogs-no-match");
+	chipsBox.innerHTML = "";
+
+	const projectsSeen = new Map(); // key -> label (first spelling seen)
+	sortedDevlogs.forEach(devlog => {
+		const label = devlogProjectLabel(devlog);
+		const key = projectKey(label);
+		if (!projectsSeen.has(key)) projectsSeen.set(key, label);
+	});
+	// Keep Miscellaneous last.
+	const miscKey = projectKey(NO_PROJECT_LABEL);
+	if (projectsSeen.has(miscKey)) {
+		const misc = projectsSeen.get(miscKey);
+		projectsSeen.delete(miscKey);
+		projectsSeen.set(miscKey, misc);
+	}
+	if (!projectsSeen.size) { bar.hidden = true; return; }
+
+	const hiddenProjects = new Set();
+	function apply() {
+		let visible = 0;
+		cards.forEach(card => {
+			const hide = hiddenProjects.has(card.dataset.project);
+			card.hidden = hide;
+			if (!hide) visible++;
+		});
+		noMatch.hidden = visible > 0;
+	}
+
+	projectsSeen.forEach((label, key) => {
+		const chip = document.createElement("button");
+		chip.type = "button";
+		chip.className = `tag ${tagClass(label, true)} devlog-filter-chip`;
+		chip.textContent = label;
+		chip.setAttribute("aria-pressed", "true");
+		chip.addEventListener("click", () => {
+			const nowHidden = !hiddenProjects.has(key);
+			if (nowHidden) hiddenProjects.add(key); else hiddenProjects.delete(key);
+			chip.setAttribute("aria-pressed", String(!nowHidden));
+			chip.classList.toggle("is-off", nowHidden);
+			apply();
+		});
+		chipsBox.appendChild(chip);
+	});
+	bar.hidden = false;
+	apply();
+}
+
+function loadPosts() {
+	if (devlogsLoaded) return;
+	postsList.innerHTML = "";
+
+	try {
+		const sortedDevlogs = [...devlogs];
+		sortedDevlogs.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+		if (!sortedDevlogs.length) {
+			postsList.innerHTML = '<p class="devlogs-empty">No devlogs yet.</p>';
+			devlogsLoaded = true;
+			return;
+		}
+
+		const cards = [];
+		sortedDevlogs.forEach(devlog => {
+			const link = document.createElement("button");
+			link.type = "button";
+			link.className = "devlog-card";
+			link.dataset.project = projectKey(devlogProjectLabel(devlog));
+			cards.push(link);
+			link.addEventListener("click", () => openDevlog(devlog));
+
+			const meta = document.createElement("div");
+			meta.className = "devlog-meta";
+			const date = document.createElement("time");
+			date.className = "devlog-date";
+			date.dateTime = devlog.date || "";
+			date.textContent = formatDevlogDate(devlog.date);
+			meta.appendChild(date);
+			meta.appendChild(makeTagChip(devlogProjectLabel(devlog), true));
+			devlogTags(devlog).forEach(tag => meta.appendChild(makeTagChip(tag)));
+
+			const title = document.createElement("h3");
+			title.className = "devlog-title";
+			title.textContent = devlog.title || "Untitled devlog";
+			const excerpt = document.createElement("p");
+			excerpt.className = "devlog-excerpt";
+			excerpt.textContent = devlog.excerpt || "";
+			link.append(meta, title, excerpt);
+			postsList.appendChild(link);
+		});
+		setupDevlogFilter(sortedDevlogs, cards);
+		devlogsLoaded = true;
+	} catch (error) {
+		console.error("Could not load devlogs:", error);
+		postsList.innerHTML = '<p class="devlogs-empty">Devlogs could not be loaded.</p>';
+	}
+}
+
+let devlogReturnFocus = null;
+
+function closeDevlog() {
+	devlogReader.hidden = true;
+	devlogReader.innerHTML = "";
+	document.body.classList.remove("devlog-open");
+	if (devlogReturnFocus && document.contains(devlogReturnFocus)) devlogReturnFocus.focus({ preventScroll: true });
+	devlogReturnFocus = null;
+}
+
+// Shows one devlog as a full-screen page on top of the site. Works from any tab,
+// and closing it (button or Escape) returns to wherever you were.
+function openDevlog(devlog) {
+	devlogReturnFocus = document.activeElement;
+	devlogReader.hidden = false;
+	devlogReader.innerHTML = "";
+	document.body.classList.add("devlog-open");
+
+	const topbar = document.createElement("div");
+	topbar.className = "devlog-topbar";
+	const back = document.createElement("button");
+	back.type = "button";
+	back.className = "devlog-back";
+	back.textContent = "← Back";
+	back.addEventListener("click", closeDevlog);
+	topbar.appendChild(back);
+
+	const article = document.createElement("article");
+	article.className = "devlog-article";
+	const header = document.createElement("header");
+	header.className = "devlog-article-header";
+	const meta = document.createElement("p");
+	meta.className = "devlog-date";
+	meta.textContent = formatDevlogDate(devlog.date);
+	const title = document.createElement("h1");
+	title.textContent = devlog.title || "Untitled devlog";
+	header.append(meta);
+	const articleTags = devlogTags(devlog);
+	{
+		const tagRow = document.createElement("div");
+		tagRow.className = "card-meta";
+		tagRow.appendChild(makeTagChip(devlogProjectLabel(devlog), true));
+		articleTags.forEach(tag => tagRow.appendChild(makeTagChip(tag)));
+		header.append(tagRow);
+	}
+	header.append(title);
+	if (devlog.cover) {
+		const cover = document.createElement("img");
+		cover.className = "devlog-cover";
+		cover.src = devlog.cover;
+		cover.alt = devlog.title ? `${devlog.title} cover` : "Devlog cover";
+		header.appendChild(cover);
+	}
+	const body = document.createElement("div");
+	body.className = "devlog-content";
+	body.textContent = devlog.content || "";
+	article.append(header, body);
+	devlogReader.append(topbar, article);
+	devlogReader.scrollTop = 0;
+	back.focus({ preventScroll: true });
+}
 
 // ---------------------------------------------------------
 // Scroll-to-top button — appears after scrolling down a bit,
