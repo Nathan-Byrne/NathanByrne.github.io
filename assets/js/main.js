@@ -2,7 +2,7 @@
 
 const projects = [
 	{
-		name: "PROJECT: Boardbreakers",
+		name: "Boardbreakers",
 		tags: ["Independent Learning", "GDScript", "Godot", "Steamworks", "Aseprite", "GitHub", "Solo Project"],
 		thumbnail: "assets/images/boardbreakersCover.png",
 		brief: "A 2.5D, Competitive Board Game where you Craft Builds and Forge New Dice to Come Out on Top Against your Friends",
@@ -14,7 +14,7 @@ const projects = [
 	},
 	{
 		name: "Dead-Line",
-		tags: ["GMTK Game Jam 2026", "GDScript", "Godot", "Playtester", "Itch.io", "Team Project"],
+		tags: ["GMTK Game Jam 2026", "GDScript", "Godot", "Playtester", "Itch.io", "GitHub", "Team Project"],
 		thumbnail: "assets/images/deadLine.png",
 		brief: "A Detective Game where the Player must Scan Cameras to pin down the Criminal in the area while under a Ticking Timer",
 		personalFavourite: false,

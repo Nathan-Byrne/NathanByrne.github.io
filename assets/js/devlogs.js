@@ -2,7 +2,7 @@ const devlogs = [
 	{
 		title: "Boardbreakers Devlog (Pre-Reveal #1)",
 		date: "2026-11-XX",
-		project: "PROJECT: Boardbreakers",
+		project: "Boardbreakers",
 		tags: ["Refactoring", 
 			"Steamworks", 
 			"Online Multiplayer", 
@@ -23,17 +23,6 @@ Placeholder line 1.
 Placeholder Line 2.
 
 Nathan`
-	},
-
-	{
-		title: "CV Update #1",
-		date: "2026-11-11",
-		project: "",
-		tags: ["CV"],
-		blurb: "A devlog that has not been completed.",
-		cover: "",
-		images: [],
-		content: `Placeholder.`
 	},
 
 	{
