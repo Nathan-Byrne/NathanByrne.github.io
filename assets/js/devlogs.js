@@ -3,8 +3,24 @@ const devlogs = [
 		title: "Boardbreakers Devlog (Pre-Reveal #1)",
 		date: "2026-11-XX",
 		project: "PROJECT: Boardbreakers",
-		tags: ["Placeholder Tag"],
-		excerpt: "A Devlog that has not been Completed.",
+		tags: ["Refactoring", "Steamworks", "Online Multiplayer", "Cloud Saves", "Achievements", "Dev Console"],
+		excerpt: "A summary of work completed and expanded on between Aug 2026 - Sep 2026.",
+		cover: "",
+		content: `Talk about: Refactoring networking stuff, implemented local + cloud saves, team members on the side, achievements (additions + new steam features), custom dev console and concept brainstorming.
+
+Placeholder line 1.
+
+Placeholder Line 2.
+
+Nathan`
+	},
+
+	{
+		title: "CV Update #1",
+		date: "2026-11-11",
+		project: "",
+		tags: ["CV"],
+		excerpt: "A devlog that has not been completed.",
 		cover: "",
 		content: `Placeholder.`
 	},
@@ -14,7 +30,7 @@ const devlogs = [
 		date: "2026-11-10",
 		project: "Personal Website",
 		tags: [],
-		excerpt: "Talking about Devlogs and how they Work.",
+		excerpt: "Talking about devlogs and how they work.",
 		cover: "assets/images/devlogImages/introducingDevlogs/cover.png",
 		content: `The most recent addition to my website is devlogs, which allows me to keep track of work I wish to publish and explain on this website. This also keeps me motivated when it comes to developing my own projects and I can now create records of everything I develop and why.
 
