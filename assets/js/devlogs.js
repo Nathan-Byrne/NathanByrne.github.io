@@ -3,9 +3,19 @@ const devlogs = [
 		title: "Boardbreakers Devlog (Pre-Reveal #1)",
 		date: "2026-11-XX",
 		project: "PROJECT: Boardbreakers",
-		tags: ["Refactoring", "Steamworks", "Online Multiplayer", "Cloud Saves", "Achievements", "Dev Console"],
-		excerpt: "A summary of work completed and expanded on between Aug 2026 - Sep 2026.",
+		tags: ["Refactoring", 
+			"Steamworks", 
+			"Online Multiplayer", 
+			"Cloud Saves", 
+			"Achievements", 
+			"Dev Console"
+		],
+		blurb: "(Not Completed) A summary of work completed and expanded on in August and September 2026.",
 		cover: "",
+		images: [{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/image1.png", after: 1}, 
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/image2.png", after: 2}, 
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/image3.png", after: 3}
+		],
 		content: `Talk about: Refactoring networking stuff, implemented local + cloud saves, team members on the side, achievements (additions + new steam features), custom dev console and concept brainstorming.
 
 Placeholder line 1.
@@ -20,8 +30,9 @@ Nathan`
 		date: "2026-11-11",
 		project: "",
 		tags: ["CV"],
-		excerpt: "A devlog that has not been completed.",
+		blurb: "A devlog that has not been completed.",
 		cover: "",
+		images: [],
 		content: `Placeholder.`
 	},
 
@@ -29,9 +40,10 @@ Nathan`
 		title: "Introducing Devlogs",
 		date: "2026-11-10",
 		project: "Personal Website",
-		tags: [],
-		excerpt: "Talking about devlogs and how they work.",
+		tags: ["Devlogs"],
+		blurb: "Talking about devlogs and how they work.",
 		cover: "assets/images/devlogImages/introducingDevlogs/cover.png",
+		images: [],
 		content: `The most recent addition to my website is devlogs, which allows me to keep track of work I wish to publish and explain on this website. This also keeps me motivated when it comes to developing my own projects and I can now create records of everything I develop and why.
 
 The devlog comes with tags to filter visible logs and can also show up in their own project boxes in different tabs. The devlog tab is a list of all posted devlogs.

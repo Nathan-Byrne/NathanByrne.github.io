@@ -202,9 +202,9 @@ function devlogsForName(name) {
 		.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 }
 
-// Short plain-text preview of a devlog: its excerpt, or the start of its content.
+// Short plain-text preview of a devlog: its blurb, or the start of its content.
 function devlogSnippet(devlog, maxLength = 120) {
-	const text = String(devlog.excerpt || devlog.content || "").replace(/\s+/g, " ").trim();
+	const text = String(devlog.blurb || devlog.content || "").replace(/\s+/g, " ").trim();
 	return text.length > maxLength ? `${text.slice(0, maxLength).trimEnd()}…` : text;
 }
 
@@ -721,6 +721,43 @@ function makeTagChip(tag, isProject = false) {
 // Project filter at the top of the Devlogs tab: one chip per distinct "project" value.
 // Clicking a chip hides/shows the devlogs for that project. Devlogs with no project
 // belong to "Miscellaneous", which gets its own chip (always last).
+// Devlog cards keep date + project + tags on ONE line. Tags that don't fit are hidden and
+// replaced by a "+X more" chip (hover it to see which). Re-run when the width changes.
+const devlogMetas = [];
+
+function fitDevlogMeta(meta) {
+	const tagChips = [...meta.querySelectorAll(".devlog-meta-tag")];
+	const oldMore = meta.querySelector(".devlog-meta-more");
+	if (oldMore) oldMore.remove();
+	tagChips.forEach(chip => { chip.hidden = false; });
+	if (!tagChips.length || meta.clientWidth === 0) return; // nothing to fit, or card not visible
+
+	let more = null;
+	let hiddenCount = 0;
+	while (meta.scrollWidth > meta.clientWidth + 1 && hiddenCount < tagChips.length) {
+		hiddenCount++;
+		tagChips[tagChips.length - hiddenCount].hidden = true;
+		if (!more) {
+			more = document.createElement("span");
+			more.className = "tag devlog-meta-more";
+			meta.appendChild(more);
+		}
+		more.textContent = `+${hiddenCount} more`;
+		more.title = tagChips.slice(tagChips.length - hiddenCount).map(c => c.textContent).join(", ");
+	}
+}
+
+function fitAllDevlogMetas() {
+	devlogMetas.forEach(fitDevlogMeta);
+}
+
+let devlogFitQueued = false;
+window.addEventListener("resize", () => {
+	if (devlogFitQueued) return;
+	devlogFitQueued = true;
+	requestAnimationFrame(() => { devlogFitQueued = false; fitAllDevlogMetas(); });
+});
+
 // A devlog with no "project" is shown as "Miscellaneous" (and filtered like any other project).
 const NO_PROJECT_LABEL = "Miscellaneous";
 function devlogProjectLabel(devlog) {
@@ -761,6 +798,7 @@ function setupDevlogFilter(sortedDevlogs, cards) {
 			if (!hide) visible++;
 		});
 		noMatch.hidden = visible > 0;
+		fitAllDevlogMetas(); // cards that were hidden have no width until they are shown again
 	}
 
 	projectsSeen.forEach((label, key) => {
@@ -813,14 +851,19 @@ function loadPosts() {
 			date.textContent = formatDevlogDate(devlog.date);
 			meta.appendChild(date);
 			meta.appendChild(makeTagChip(devlogProjectLabel(devlog), true));
-			devlogTags(devlog).forEach(tag => meta.appendChild(makeTagChip(tag)));
+			devlogTags(devlog).forEach(tag => {
+				const chip = makeTagChip(tag);
+				chip.classList.add("devlog-meta-tag");
+				meta.appendChild(chip);
+			});
+			devlogMetas.push(meta);
 
 			const title = document.createElement("h3");
 			title.className = "devlog-title";
 			title.textContent = devlog.title || "Untitled devlog";
-			const excerpt = document.createElement("p");
-			excerpt.className = "devlog-excerpt";
-			excerpt.textContent = devlog.excerpt || "";
+			const blurb = document.createElement("p");
+			blurb.className = "devlog-blurb";
+			blurb.textContent = devlog.blurb || "";
 			if (devlog.cover) {
 				// Cover image on the Devlogs tab only (not on the project/mod bubbles).
 				const cover = document.createElement("img");
@@ -831,31 +874,105 @@ function loadPosts() {
 				cover.addEventListener("error", () => cover.remove()); // missing image: just skip it
 				link.append(cover);
 			}
-			link.append(meta, title, excerpt);
+			link.append(meta, title, blurb);
 			postsList.appendChild(link);
 		});
 		setupDevlogFilter(sortedDevlogs, cards);
 		devlogsLoaded = true;
+		fitAllDevlogMetas();
+		if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAllDevlogMetas);
 	} catch (error) {
 		console.error("Could not load devlogs:", error);
 		postsList.innerHTML = '<p class="devlogs-empty">Devlogs could not be loaded.</p>';
 	}
 }
 
+// Builds the article body: each blank-line-separated block of `content` becomes a paragraph,
+// and each entry of `images` is placed after the paragraph number in its "after" field
+// (0 = before the first paragraph; missing or too large = at the end).
+function buildDevlogBody(devlog) {
+	const body = document.createElement("div");
+	body.className = "devlog-content";
+
+	const paragraphs = String(devlog.content || "")
+		.split(/\n[ \t]*\n/)
+		.map(text => text.replace(/^\n+|\n+$/g, ""))
+		.filter(text => text.trim() !== "");
+
+	const images = (Array.isArray(devlog.images) ? devlog.images : [])
+		.map(img => (typeof img === "string" ? { src: img } : img))
+		.filter(img => img && typeof img.src === "string" && img.src.trim() !== "");
+	const placedAt = img => {
+		const n = Number(img.after);
+		return img.after === undefined || img.after === null || !Number.isFinite(n)
+			? paragraphs.length
+			: Math.min(Math.max(Math.floor(n), 0), paragraphs.length);
+	};
+
+	const addImages = position => {
+		images.filter(img => placedAt(img) === position).forEach(img => {
+			const figure = document.createElement("figure");
+			figure.className = "devlog-figure";
+			const image = document.createElement("img");
+			image.src = img.src;
+			image.alt = img.alt || img.caption || "";
+			image.loading = "lazy";
+			image.addEventListener("error", () => figure.remove()); // missing image: skip it
+			figure.appendChild(image);
+			if (img.caption) {
+				const caption = document.createElement("figcaption");
+				caption.textContent = img.caption;
+				figure.appendChild(caption);
+			}
+			body.appendChild(figure);
+		});
+	};
+
+	addImages(0);
+	paragraphs.forEach((text, i) => {
+		const p = document.createElement("p");
+		p.textContent = text;
+		body.appendChild(p);
+		addImages(i + 1);
+	});
+	return body;
+}
+
 let devlogReturnFocus = null;
 
+// The reader fades/slides in and out (see .devlog-reader in the CSS). In simple mode it
+// appears and disappears instantly, as before.
+const DEVLOG_CLOSE_MS = 260; // a little longer than the CSS close transition (0.22s)
+let devlogCloseTimer = null;
+let devlogClosing = false;
+
 function closeDevlog() {
-	devlogReader.hidden = true;
-	devlogReader.innerHTML = "";
+	if (devlogReader.hidden || devlogClosing) return;
 	document.body.classList.remove("devlog-open");
 	if (devlogReturnFocus && document.contains(devlogReturnFocus)) devlogReturnFocus.focus({ preventScroll: true });
 	devlogReturnFocus = null;
+
+	const finish = () => {
+		devlogReader.hidden = true;
+		devlogReader.innerHTML = "";
+		devlogClosing = false;
+		devlogCloseTimer = null;
+	};
+	devlogReader.classList.remove("is-visible");
+	if (document.body.classList.contains("simple-mode")) {
+		finish();
+	} else {
+		devlogClosing = true;
+		devlogCloseTimer = setTimeout(finish, DEVLOG_CLOSE_MS);
+	}
 }
 
 // Shows one devlog as a full-screen page on top of the site. Works from any tab,
 // and closing it (button or Escape) returns to wherever you were.
 function openDevlog(devlog) {
-	devlogReturnFocus = document.activeElement;
+	if (devlogCloseTimer) { clearTimeout(devlogCloseTimer); devlogCloseTimer = null; }
+	devlogClosing = false;
+	if (devlogReader.hidden) devlogReturnFocus = document.activeElement; // remember where to return focus
 	devlogReader.hidden = false;
 	devlogReader.innerHTML = "";
 	document.body.classList.add("devlog-open");
@@ -888,6 +1005,12 @@ function openDevlog(devlog) {
 		header.append(tagRow);
 	}
 	header.append(title);
+	if (devlog.blurb) {
+		const blurb = document.createElement("p");
+		blurb.className = "devlog-blurb";
+		blurb.textContent = devlog.blurb;
+		header.append(blurb);
+	}
 	if (devlog.cover) {
 		const cover = document.createElement("img");
 		cover.className = "devlog-cover";
@@ -895,12 +1018,12 @@ function openDevlog(devlog) {
 		cover.alt = devlog.title ? `${devlog.title} cover` : "Devlog cover";
 		header.appendChild(cover);
 	}
-	const body = document.createElement("div");
-	body.className = "devlog-content";
-	body.textContent = devlog.content || "";
+	const body = buildDevlogBody(devlog);
 	article.append(header, body);
 	devlogReader.append(topbar, article);
 	devlogReader.scrollTop = 0;
+	void devlogReader.offsetWidth; // make the browser register the hidden state first, so the fade-in plays
+	devlogReader.classList.add("is-visible");
 	back.focus({ preventScroll: true });
 }
 
