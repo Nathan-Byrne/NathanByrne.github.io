@@ -637,19 +637,46 @@ themeSwatches.forEach(btn => {
 });
 
 // ---------------------------------------------------------
-// "Last updated" footer text — driven by document.lastModified,
-// so it stays accurate automatically as you push new commits,
-// no manual date-editing required.
+// "Last updated" footer text. document.lastModified only describes index.html, so editing
+// devlogs.js (or main.js / style.css) on its own never moved it. Now it shows the newest of:
+//   - index.html's modified time (document.lastModified)
+//   - the modified time the server reports for devlogs.js, main.js and style.css
+//   - the newest devlog date (ignored if it is in the future)
+// No manual date-editing needed. Opening index.html straight from disk (file://) can't read
+// the other files' times, so there it falls back to index.html plus the newest devlog date.
 // ---------------------------------------------------------
 const lastUpdatedEl = document.getElementById("last-updated");
 if (lastUpdatedEl) {
-	const modifiedDate = new Date(document.lastModified);
-	const formatted = modifiedDate.toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "long",
-		day: "numeric"
+	const showLastUpdated = date => {
+		const formatted = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+		lastUpdatedEl.textContent = `Last updated ${formatted}`;
+	};
+	const isValid = date => date instanceof Date && !Number.isNaN(date.getTime());
+
+	let latest = new Date(document.lastModified);
+	if (!isValid(latest)) latest = new Date(0);
+
+	const now = new Date();
+	devlogs.forEach(devlog => {
+		const parts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(devlog.date || ""));
+		if (!parts) return; // skips placeholders like "2026-11-XX"
+		const date = new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3]));
+		if (isValid(date) && date <= now && date > latest) latest = date;
 	});
-	lastUpdatedEl.textContent = `Last updated ${formatted}`;
+	showLastUpdated(latest);
+
+	const trackedFiles = ["assets/js/devlogs.js", "assets/js/main.js", "assets/css/style.css"];
+	Promise.all(trackedFiles.map(file =>
+		fetch(file, { method: "HEAD", cache: "no-cache" })
+			.then(response => (response.ok ? response.headers.get("Last-Modified") : null))
+			.catch(() => null)
+	)).then(headers => {
+		headers.forEach(header => {
+			const date = header ? new Date(header) : null;
+			if (date && isValid(date) && date > latest) latest = date;
+		});
+		showLastUpdated(latest);
+	});
 }
 
 // ---------------------------------------------------------
