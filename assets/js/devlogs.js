@@ -12,13 +12,7 @@ const devlogs = [
 		],
 		blurb: "(Not Completed) A summary of work completed and expanded on in August and September 2026.",
 		cover: "",
-		images: [{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 2}, 
-			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 5},
-			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 7},
-			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 8},
-			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 9},
-			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 10},
-			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 11}
+		images: [{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 2}
 		],
 		content: `This the is first posted, pre-reveal devlog for my own personal game project "Boardbreakers". This devlog goes through what I've worked on during August and Setember this year (most of October is excluded due to me taking a break and celebrating my graduation day).
 
@@ -38,14 +32,15 @@ Originally, the rich presence for the project was not implemented well and every
 Uploading a rich presence files to Steamworks requires a .txt file with defined "Status", "Messages" and in some cases "Variables". Since you usually only need to deal with the status in code, it's fully possible to contain the full set up of rich presence in functions.
 I went ahead and created a manager script for rich presence, and now calling a function inside of there will do all of the updating (if I had a status "#hello" and the message was "Hello User!", all I need to do is make a function along the lines of "useHelloPresence()" and just change the current presence to "#hello"). Any status that required variables would be passed through the functions arguments.
 
-"Team Members":
-etc.
+Side Developers / Playtesters:
+To provide assistance for future coding / art problems, brainstorming sessions and participating in playtests, I've brought in 4 different people I can trust to make the creation process smoother. I plan to bring more people into the project when playtests start becoming intergral for feedback.
 
 Achievements (Local + Steam):
 etc.
 
 Internal Dev Console:
-etc.
+The game now has a built-in developer console for changing the state of the game without having to edit the Godot project. The developer console also allows to makes these changes on builds uploaded on Steam.
+The current available commands consist of unlocking specific achievements, locking all achievements, displaying all achievement and stat ID set in Steamworks, resetting stats and modifing stat values. The developer console also allows for the user to target the local saves or Steam for the changes. In the future, this will be the way gameplay will be tested without wasting time by adding new commands. With how the project exports are set up, only the developer export is packaged with the developer console, meaning the public exported builds will never include this. The exclusion of the developer console is intended as the developer console is destructive to your saves and should not be used unless you know what it does. 
 
 Further Idea Brainstorming:
 etc.
