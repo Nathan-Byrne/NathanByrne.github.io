@@ -1329,3 +1329,16 @@ body.devlog-open { overflow: hidden; }
 .devlog-figure img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--border); }
 .devlog-figure figcaption { margin-top: 0.6rem; text-align: center; font: 0.78rem var(--font-mono); color: var(--text-muted); }
 .devlog-meta-more { color: var(--text-muted); }
+
+/* **bold** text inside devlog bodies */
+.devlog-content strong { font-weight: 700; color: var(--text); }
+.devlog-content u { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* --- divider between points in a devlog: a faint line that fades out at both ends */
+.devlog-divider {
+	border: 0;
+	height: 1px;
+	margin: 2.4rem 0;
+	background: linear-gradient(90deg, transparent, var(--swirl-1) 50%, transparent);
+	opacity: 0.45;
+}

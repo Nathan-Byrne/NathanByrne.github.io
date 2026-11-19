@@ -204,7 +204,7 @@ function devlogsForName(name) {
 
 // Short plain-text preview of a devlog: its blurb, or the start of its content.
 function devlogSnippet(devlog, maxLength = 120) {
-	const text = String(devlog.blurb || devlog.content || "").replace(/\s+/g, " ").trim();
+	const text = String(devlog.blurb || devlog.content || "").replace(/\*\*|__/g, "").replace(/\s+/g, " ").trim();
 	return text.length > maxLength ? `${text.slice(0, maxLength).trimEnd()}…` : text;
 }
 
@@ -914,17 +914,39 @@ function loadPosts() {
 	}
 }
 
+// Writes `text` into `parent`, turning **double asterisks** into bold and __double underscores__
+// into underlined text. They can be nested (**bold and __underlined__**). Built from DOM nodes
+// (never innerHTML), so devlog text can't inject HTML. A marker with no closing pair stays as
+// plain text.
+function appendFormattedText(parent, text) {
+	const pattern = /(\*\*|__)([\s\S]+?)\1/g;
+	let lastIndex = 0;
+	let match;
+	while ((match = pattern.exec(text)) !== null) {
+		if (match.index > lastIndex) parent.append(document.createTextNode(text.slice(lastIndex, match.index)));
+		const wrapper = document.createElement(match[1] === "**" ? "strong" : "u");
+		appendFormattedText(wrapper, match[2]);
+		parent.append(wrapper);
+		lastIndex = pattern.lastIndex;
+	}
+	if (lastIndex < text.length) parent.append(document.createTextNode(text.slice(lastIndex)));
+}
+
 // Builds the article body: each blank-line-separated block of `content` becomes a paragraph,
-// and each entry of `images` is placed after the paragraph number in its "after" field
+// (a block that is just --- becomes a faint divider line), and each entry of `images` is placed after the paragraph number in its "after" field
 // (0 = before the first paragraph; missing or too large = at the end).
 function buildDevlogBody(devlog) {
 	const body = document.createElement("div");
 	body.className = "devlog-content";
 
-	const paragraphs = String(devlog.content || "")
+	// Blocks are separated by a blank line. A block that is only --- is a divider line; dividers
+	// are NOT counted as paragraphs, so they never change an image's "after" number.
+	const isDivider = text => /^-{3,}$/.test(text.trim());
+	const blocks = String(devlog.content || "")
 		.split(/\n[ \t]*\n/)
 		.map(text => text.replace(/^\n+|\n+$/g, ""))
 		.filter(text => text.trim() !== "");
+	const paragraphs = blocks.filter(text => !isDivider(text));
 
 	const images = (Array.isArray(devlog.images) ? devlog.images : [])
 		.map(img => (typeof img === "string" ? { src: img } : img))
@@ -956,11 +978,19 @@ function buildDevlogBody(devlog) {
 	};
 
 	addImages(0);
-	paragraphs.forEach((text, i) => {
+	let paragraphNumber = 0;
+	blocks.forEach(text => {
+		if (isDivider(text)) {
+			const divider = document.createElement("hr");
+			divider.className = "devlog-divider";
+			body.appendChild(divider);
+			return;
+		}
 		const p = document.createElement("p");
-		p.textContent = text;
+		appendFormattedText(p, text);
 		body.appendChild(p);
-		addImages(i + 1);
+		paragraphNumber++;
+		addImages(paragraphNumber);
 	});
 	return body;
 }
