@@ -1,7 +1,7 @@
 const devlogs = [
 	{
 		title: "Boardbreakers Devlog (Pre-Reveal #1)",
-		date: "2026-11-XX",
+		date: "2026-11-19",
 		project: "Boardbreakers",
 		tags: ["Refactoring", 
 			"Steamworks", 
@@ -10,9 +10,16 @@ const devlogs = [
 			"Achievements", 
 			"Dev Console"
 		],
-		blurb: "(Not Completed) A summary of work completed and expanded on in August, September and November 2026.",
-		cover: "",
-		images: [{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/placeholder.png", after: 2}
+		blurb: "A summary of work completed and expanded on in August, September and the first half of November 2026.",
+		cover: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/cover.png",
+		images: [{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/multiplayerImage.png", after: 2},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/cloudImage.png", after: 5},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/richPresence1Image.png", after: 8},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/richPresence2Image.png", after: 8},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/achievement1Image.png", after: 12},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/achievement2Image.png", after: 12},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/consoleImage.png", after: 14},
+			{src: "assets/images/devlogImages/boardbreakersDevlogPreReveal1/tabletopImage.png", after: 15}
 		],
 		content: `This is the first posted, pre-reveal devlog for my own personal game project, "Boardbreakers". This devlog goes through what I've worked on during August, September and the first half of November this year (most of October is excluded due to me taking a break and celebrating my graduation day).
 
@@ -24,7 +31,7 @@ In the past, the game only supported local saves that only lived on the user's P
 
 By using Steams cloud saves, I can track file locations and scan their contents in order to upload the correct file types that are defined on Steamworks. This results in those uploaded files being saved on Steam and attempting to run the game on different systems will make Steam fetch those saved files to retain your data. Steam also automatically uploads tracked locations when game sessions conclude.
 
-I also expanded the number of profiles a user can use, from 1 to 3 (and an additional 3 development save files to avoid conflicting with legit files).
+I also expanded the number of profiles a user can use, from 1 to 3 (and an additional 3 development save files to avoid conflicting with legit files). Each profile can store a limited amount of backups which are currently only manually created.
 
 Refactored Rich Presence:
 Originally, the rich presence for the project was not implemented well and everything had to be assigned manually each time I wanted to update or change the rich presence. As a short-term addition where I was mainly testing it, this was an acceptable approach, but now that I've refactored the networking script, it was also time to create a solid, more maintainable structure for rich presence.
@@ -41,7 +48,7 @@ While achievements were working and implemented, they were bare bones and nothin
 
 Achievements and stats are now tracked individually per profile rather than everything being stored on Steam. The reason for this is to prevent progress on all saves if an achievement was unlocked on a single save. For Steam, bool achievements will be displayed as unlocked if at least one profile has unlocked the achievement, while achievements that use stats (ints) will only display the profile that has the highest saved stat number (all other profiles still make progress in their own save files).
 
-With the inclusion of the new achievement overhaul from Steam, all the achievements now live in a developer-only set.
+With the inclusion of the new achievement overhaul from Steam, all the display only achievements now live in a developer-only set.
 
 Internal Dev Console:
 The game now has a built-in developer console for changing the state of the game without having to edit the Godot project. The developer console also allows us to make these changes on builds uploaded on Steam.
